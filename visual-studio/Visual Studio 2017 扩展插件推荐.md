@@ -1,0 +1,140 @@
+# Visual Studio 2017 扩展插件推荐
+
+本文对Visual Studio 2017的增强型插件进行记录。
+
+
+
+### Extensibility Tools
+
+用于增强Visual Studio 2017智能感知及其他。
+
+
+
+### Viasfora
+
+增强代码括号匹配和关键字等高亮显示。
+
+
+
+### Glyphfriend 2017
+
+适用于前端开发者，增强现有的Intellisense，以显示许多常见的基于字形的字体库（如Font Awesome，Material Design，Octicons等）的预览字形。
+
+
+
+### CSS Tools
+
+适用于前端开发者，增强CSS的交互。
+
+
+
+### File Icons
+
+增强VS中的解决方案资源管理器中的文件图标显示。
+
+
+
+### CodeMaid
+
+用于清理或简化代码
+
+
+
+### Image Optimizer
+
+无损压缩图片
+
+
+
+### VSColorOutput
+
+构建和调试窗口的颜色输出，包括查找窗口
+
+
+
+### File Path On Footer
+
+在底部状态栏显示当前文件的物理路径
+
+
+
+### Color Theme Editor for Visual Studio 2017
+
+配置主题，方便修改字体颜色和其他设置。
+
+
+
+### Customize Visual Studio Window Title
+
+自定义Visual Studio窗口标题，可以区分不同的解决方案。
+
+
+
+### Code alignment
+
+代码对齐工具
+
+
+
+### Editor Guidelines
+
+为代码编辑添加垂直线参考
+
+
+
+### Trailing Whitespace Visualizer
+
+可以识别和删除任何尾随空格，保持代码文件的清洁
+
+
+
+### Output enhancer
+
+扩展以向Visual Studio输出窗口添加颜色.
+
+
+
+### Indent Guides
+
+为缩进提供垂直线参考
+
+
+
+### Add New File
+
+使用shift+F2基于当前文件的位置添加新的文件或文件夹。
+
+
+
+### Clear MEF Component Cache
+
+清除Visual Studio MEF组件缓存以修复缓存损坏问题。
+
+
+
+### Project File Tools
+
+为基于XML的项目文件（如.csproj和.vbproj文件）提供Intellisense和其他工具。
+
+
+
+### Supercharger
+
+代码编辑辅助工具，丰富的代码格式、名称强调、光标主体末端详细信息，代码别名收藏和设置。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
