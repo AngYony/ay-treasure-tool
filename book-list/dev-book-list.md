@@ -33,11 +33,19 @@
 
 
 
-## 计算机网络
+## 网络协议
+
+[HTTP文档](https://developer.mozilla.org/zh-CN/docs/Web/HTTP)，需要知道 HTTP 协议的几个关键点：1）HTTP 头，2）HTTP 的请求方法，3）HTTP 的返回码。还有，HTTP 的 Cookie、缓存、会话，以及链接管理，等等，在 MDN 的这个文档中都有了。对于 HTTP 协议，你不需要知道所有的东西，你只需要了解这个协议的最关键的那些东西就好了。
+
+
+
+
 
 
 
 ## 操作系统
+
+
 
 
 
@@ -48,6 +56,12 @@
 《代码大全》
 
 《代码整洁之道》
+
+==《修改代码的艺术》==（这本书是继《重构》之后探讨修改代码技术的又一里程碑式的著作，而且从涵盖面和深度上都超过了前两部经典（《代码大全》和《重构》））
+
+《代码整洁之道》
+
+《程序员的职业素养》
 
 
 
@@ -75,3 +89,48 @@
 
 《 C程序设计语言》
 
+
+
+
+
+## Python
+
+《Python编程：从入门到实践》
+
+
+
+
+
+## Java
+
+《Java核心技术.卷I》
+
+《Spring实战》
+
+《Spring Boot实战》
+
+
+
+
+
+## Linux
+
+《鸟哥的Linux私房菜》
+
+
+
+
+
+## MySQL
+
+《MySQL必知必会》
+
+《[高性能 MySQL](https://book.douban.com/subject/23008813/)》
+
+《[MySQL 技术内幕：InnoDB 存储引擎](https://book.douban.com/subject/24708143/)》
+
+《[数据库的索引设计与优化](https://book.douban.com/subject/26419771/)》
+
+[MySQL 官方手册](https://dev.mysql.com/doc/)
+
+《MySQL性能调优与架构设计》
