@@ -20,7 +20,7 @@
 | 【Ctrl+Shift+/】       | 使用/* */的形式添加或取消注释                    |
 | 【Ctrl+Alt+T】         | 为所选的代码添加代码块。如：if、try/catch、for等 |
 | 【Alt+Insert】         | 为变量添加get/set选择器                          |
-|                        |                                                  |
+| 【Ctrl+Alt+L】         | 格式化代码                                       |
 |                        |                                                  |
 |                        |                                                  |
 |                        |                                                  |
