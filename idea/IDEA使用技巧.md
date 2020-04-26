@@ -24,3 +24,26 @@ Settings => Editor => General => Appearance => 取消“Show parameter name hint
 
 
 
+### 创建TODO待办事项
+
+```java
+//TODO:创建代办事项
+```
+
+
+
+### 用断点调试程序
+
+关注点：Frame视图和Variable视图。
+
+Step Over：执行一行
+
+Step Out：继续执行直到遇到下一个断点或者程序结束。
+
+Evaluate Expression：在对话框输入代码，直接执行看结果值。右击代码，选择“Evaluate Expression..“
+
+条件断点：给断点设置条件，只有满足条件时，程序才会在该断点停住。右击断点图标。
+
+Step Into：进入被调用的方法内部继续调试
+
+ 
