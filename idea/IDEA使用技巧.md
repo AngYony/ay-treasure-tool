@@ -47,3 +47,16 @@ Evaluate Expression：在对话框输入代码，直接执行看结果值。右�
 Step Into：进入被调用的方法内部继续调试
 
  
+
+### 按住Ctrl跳转到.java文件而不是.class文件
+
+```
+File => Project Structure => SDKs 
+```
+
+选择“JDK home path”。正常情况下，IDEA会自动添加Classpath，sourcepath，Annotations，其中Sourcepath就是源代码的路径。一般会是src.zip。
+
+
+
+
+
