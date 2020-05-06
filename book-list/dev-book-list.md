@@ -22,12 +22,25 @@
 
 
 
+## 计算机
+
+《编码：隐匿在计算机软硬件背后的语言》
+
+《深入理解计算机系统》
+
+《计算机编程艺术》
+
+《计算机程序的构造和解释》
+
 
 
 ## 数据结构与算法
 
 《大话数据结构》
+
 《算法第4版》
+
+《算法导论》
 
 
 
@@ -106,11 +119,31 @@
 
 ## Python
 
+### 初级
+
 《Python编程：从入门到实践》
 
+《[Python编程快速上手](https://book.douban.com/subject/26836700/)》
 
 
 
+### 中级
+
+《[流畅的Python](https://book.douban.com/subject/27028517/)》
+
+《[Effective Python](https://book.douban.com/subject/26709315/)》
+
+《[Python Cookbook 中文版，第 3 版](https://book.douban.com/subject/26381341/)》
+
+《python 3标准库》
+
+
+
+### 高级
+
+### 其他
+
+《集体智慧编程》
 
 ## Java
 
