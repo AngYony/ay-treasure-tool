@@ -124,7 +124,9 @@
 
 
 
+### Type Hierarchy Viewer
 
+用于以各种不同方式可视化给定类型的层次结构。
 
 
 

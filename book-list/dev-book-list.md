@@ -52,7 +52,7 @@
 
 [HTTP文档](https://developer.mozilla.org/zh-CN/docs/Web/HTTP)，需要知道 HTTP 协议的几个关键点：1）HTTP 头，2）HTTP 的请求方法，3）HTTP 的返回码。还有，HTTP 的 Cookie、缓存、会话，以及链接管理，等等，在 MDN 的这个文档中都有了。对于 HTTP 协议，你不需要知道所有的东西，你只需要了解这个协议的最关键的那些东西就好了。
 
-
+《TCP/IP 详解》
 
 
 
