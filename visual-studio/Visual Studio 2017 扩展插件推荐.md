@@ -130,13 +130,37 @@
 
 
 
+### Code alignment
+
+代码对齐工具
 
 
 
+### Editor Enhancements
+
+提供其他功能，如 HTML 和 URL 编码、转换和编辑器所选文本的排序。
 
 
 
+### Visual Studio Spell Checker (VS2017 and Later)
+
+代码拼写检查
 
 
 
+### Output enhancer
+
+输出增强器
+
+
+
+### Color Picker
+
+颜色提取器，可以提取界面中的颜色。
+
+
+
+### Copy As Html
+
+将vs中的代码以HTML的格式进行复制，复制后带有HTML相关样式。
 
