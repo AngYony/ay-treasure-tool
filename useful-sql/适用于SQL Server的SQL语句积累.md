@@ -172,3 +172,23 @@ WHERE er.session_id > 50
 ORDER BY er.blocking_session_id DESC,er.session_id
 ```
 
+
+
+## 添加主键
+
+```mssql
+--添加主键
+	ALTER TABLE #pool_item_ag WITH NOCHECK ADD CONSTRAINT PK_rat_temp_pool_item_ag_poolItemID PRIMARY KEY CLUSTERED(PoolItemID);
+```
+
+
+
+## 添加唯一聚集索引
+
+```mssql
+--添加唯一聚集索引
+CREATE UNIQUE CLUSTERED INDEX IX_temp_notNA_end_billing  ON #notNA_diff_billing  (BillingNumber, BillingItemNumber,PolicyNum,PoolItemID);
+```
+
+
+
