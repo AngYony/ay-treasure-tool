@@ -192,3 +192,81 @@ CREATE UNIQUE CLUSTERED INDEX IX_temp_notNA_end_billing  ON #notNA_diff_billing 
 
 
 
+## row_number() over(partition by..) 
+
+当需要查询某个结果集中的最新值、最小值、最大值时，可以使用row_number()over(partition by..）替换之前的MAX()等聚合函数，筛选出数据。
+
+未优化前的语句：
+
+```mssql
+select 'history' as VersionType,h.PoolID,h.SalesOfficeCode,h.ProfitCenterCode,h.CompanyCurrency,sum(h.AccrualValue) as AccrualValue,sum(h.AccrualValueUSD) as AccrualValueUSD
+        ,sum(h.AccrualValueP) as AccrualValueP
+            from (
+                select y.*
+                from (select max(VersionDate) as VersionDate
+                        ,BillingNumber
+                        ,BillingItemNumber
+                        ,BillingCategory
+                        ,CompanyCode
+                        ,GTNType
+                        ,FISCYEAR
+                        ,MTMSOURCEID
+                        ,FactorSource
+                        ,FactorId
+                        ,PoolID
+                        ,SegmentCode_3
+                    from GTN_BillingByPoolHistory_EMEA_BW_Increment_2019Q4_S
+                    where VersionDate<='2020-03-31'
+                    group by BillingNumber
+                        ,BillingItemNumber
+                        ,BillingCategory
+                        ,CompanyCode
+                        ,GTNType
+                        ,FISCYEAR
+                        ,MTMSOURCEID
+                        ,FactorSource
+                        ,FactorId
+                        ,PoolID
+                        ,SegmentCode_3) as t
+                left join GTN_BillingByPoolHistory_EMEA_BW_Increment_2019Q4_S as y
+                on t.BillingNumber=y.BillingNumber
+                        and t.BillingItemNumber=y.BillingItemNumber
+                        and t.BillingCategory=y.BillingCategory
+                        and t.CompanyCode=y.CompanyCode
+                        and t.GTNType=y.GTNType
+                        and t.FISCYEAR=y.FISCYEAR
+                        and t.MTMSOURCEID=y.MTMSOURCEID
+                        and t.FactorSource=y.FactorSource
+                        and t.FactorId=y.FactorId
+                        and t.PoolID=y.PoolID
+                        and isnull(t.SegmentCode_3,'')=isnull(y.SegmentCode_3,'')
+                        and t.VersionDate=y.VersionDate
+                where y.IsDel=0
+            )   h 
+ group by h.PoolID,h.SalesOfficeCode,h.ProfitCenterCode,h.CompanyCurrency
+```
+
+优化后：
+
+```mssql
+select 'history' as VersionType,t1.PoolID,t1.SalesOfficeCode,t1.ProfitCenterCode,t1.CompanyCurrency,
+SUM(t1.AccrualValue) as AccrualValue,sum(t1.AccrualValueUSD) as AccrualValueUSD
+        ,sum(t1.AccrualValueP) as AccrualValueP 
+from (
+select
+ PoolID
+,SalesOfficeCode
+,ProfitCenterCode
+,CompanyCurrency
+,AccrualValue
+,AccrualValueUSD
+,AccrualValueP
+,IsDel
+,row_number() OVER(partition by BillingNumber,BillingItemNumber,BillingCategory,CompanyCode,GTNType,FISCYEAR,MTMSOURCEID,FactorSource,FactorId,PoolID,SegmentCode_3 order by VersionDate desc) as rk
+from GTN_BillingByPoolHistory_EMEA_BW_Increment_2019Q4_S
+where VersionDate<='2020-03-31'
+) t1
+WHERE  t1.rk=1 and t1.IsDel=0 
+group by t1.PoolID,t1.SalesOfficeCode,t1.ProfitCenterCode,t1.CompanyCurrency  OPTION ( MAXDOP 8 )
+```
+
