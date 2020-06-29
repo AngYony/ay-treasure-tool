@@ -270,3 +270,22 @@ WHERE  t1.rk=1 and t1.IsDel=0
 group by t1.PoolID,t1.SalesOfficeCode,t1.ProfitCenterCode,t1.CompanyCurrency  OPTION ( MAXDOP 8 )
 ```
 
+
+
+## 表连接时指定字符串类型的列排序规则
+
+```mssql
+SELECT * FROM  [dbo].[emea_pre_Q_final_increment_2020Q1] y INNER JOIN  #first t 
+on t.BillingNumber collate chinese_prc_ci_as=y.BillingNumber
+and t.BillingItemNumber collate chinese_prc_ci_as=y.BillingItemNumber
+and t.BillingCategory collate chinese_prc_ci_as=y.BillingCategory
+and t.CompanyCode collate chinese_prc_ci_as=y.CompanyCode
+and t.GTNType collate chinese_prc_ci_as=y.GTNType
+and t.FISCYEAR collate chinese_prc_ci_as=y.FISCYEAR
+and t.MTMSOURCEID collate chinese_prc_ci_as=y.MTMSOURCEID
+and t.FactorSource=y.FactorSource
+and t.FactorId=y.FactorId
+and t.PoolID=y.PoolID
+and isnull(t.SegmentCode_3 collate chinese_prc_ci_as,'')=isnull(y.SegmentCode_3,'')
+```
+
