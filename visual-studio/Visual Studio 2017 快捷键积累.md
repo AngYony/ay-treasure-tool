@@ -54,7 +54,7 @@
 | 【Ctrl+K,B】                           | 打开代码片段编辑器，如果要创建自己的代码片段，建议使用Snippet Editor工具完成 |
 | 【Alt+↑/↓】                            | 将选定行上移或下移                                           |
 | 【Ctrl+Enter】                         | 在光标所在行的上方插入新行                                   |
-| 【Shift+Enter】                        | 在光标所在行的下方插入新行                                   |
+| 【Ctrl+Shift+Enter】或【Shift+Enter】  | 在光标所在行的下方插入新行                                   |
 |                                        |                                                              |
 |                                        |                                                              |
 |                                        |                                                              |
