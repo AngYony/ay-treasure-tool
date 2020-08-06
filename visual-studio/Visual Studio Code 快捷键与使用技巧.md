@@ -1,4 +1,4 @@
-# Visual Studio 2017 快捷键积累
+# Visual Studio Code 快捷键与使用技巧
 
 本文快捷键使用方式说明如下：
 
@@ -59,3 +59,9 @@
 |                          |                          |
 
  
+
+## VS Code 使用技巧
+
+### 快速执行选中的Python代码
+
+在Python环境中，选中要执行的代码，按下【Shift+Enter】快捷键，可快速执行。
