@@ -98,6 +98,14 @@ FROM ts_i_em_BWbilling_Accrual_EndCus_Split_temp b
 GROUP BY BillingNumber
 ```
 
+除此之外，也可以使用变量运算的形式拼接：
+
+```mssql
+DECLARE @a NVARCHAR(MAX)='' --必须初始化
+SELECT @a=@a+','+AttributeGUID FROM AttributeNameTable;
+SELECT @a;
+```
+
 
 
 ## sys.sp_executesql
@@ -289,3 +297,8 @@ and t.PoolID=y.PoolID
 and isnull(t.SegmentCode_3 collate chinese_prc_ci_as,'')=isnull(y.SegmentCode_3,'')
 ```
 
+
+
+## 行转列 / 列转行
+
+除了使用复杂的 SELECT...CASE 语句之外，更推荐使用 [PIVOT 和 UNPIVOT](https://docs.microsoft.com/zh-cn/sql/t-sql/queries/from-using-pivot-and-unpivot?view=sql-server-ver15)，前者行转列，后者列转行。
