@@ -8,6 +8,12 @@
 SELECT name FROM sys.syscolumns WHERE id=OBJECT_ID(N'{dbo.TableName}',N'U')
 ```
 
+跨库查询表的所有列名：
+
+```mssql
+SELECT name FROM [2014PSREF_Debug].sys.syscolumns WHERE id=OBJECT_ID(N'[2014PSREF_Debug].dbo.Ex_ThinkCentre_ThinkCentre_M920_Tower')
+```
+
 通过该语句可以扩展很多场景，例如查询某个表中所有列存储的数据值的最大长度。
 
 ```mssql
@@ -302,3 +308,16 @@ and isnull(t.SegmentCode_3 collate chinese_prc_ci_as,'')=isnull(y.SegmentCode_3,
 ## 行转列 / 列转行
 
 除了使用复杂的 SELECT...CASE 语句之外，更推荐使用 [PIVOT 和 UNPIVOT](https://docs.microsoft.com/zh-cn/sql/t-sql/queries/from-using-pivot-and-unpivot?view=sql-server-ver15)，前者行转列，后者列转行。
+
+使用 unpivot 列转行：
+
+```mssql
+SELECT ColumnName,ColumnValue FROM (
+		SELECT * FROM [2014PSREF_Debug].dbo.Ex_ThinkCentre_ThinkCentre_M920_Tower WHERE Model='10SF0001KR'
+	 ) a
+    unpivot 
+	(   
+		 ColumnValue FOR ColumnName IN (Product,Region,[Machine Type])
+	) up
+```
+
