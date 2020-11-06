@@ -40,6 +40,14 @@ yum -y install gcc pcre-devel zlib-devel openssl-devel libxml2-devel libxslt-dev
 
 ### 编译 Nginx 所有功能模块
 
+如果要指定Nginx的安装目录，可以在编译时使用prefix选项进行设置：
+
+```shell
+./configure --prefix=/sundot/nginx
+```
+
+编译：
+
 ```
 [root@VM-0-5-centos source]# cd nginx-1.17.8/
 [root@VM-0-5-centos source]# ./configure \
@@ -185,5 +193,33 @@ systemctl stop nginx
 
 ```
 systemctl status nginx
+```
+
+
+
+## 其他命令
+
+### 检测配置文件是否正确
+
+检测默认配置文件：
+
+```shell
+[root@iz2zea1fyfqa1d360k1vjaz nginx]# nginx -t
+nginx: the configuration file /sundot/nginx/conf/nginx.conf syntax is ok
+nginx: configuration file /sundot/nginx/conf/nginx.conf test is successful
+```
+
+检测指定的配置文件：
+
+```shell
+[root@iz2zea1fyfqa1d360k1vjaz nginx]# nginx -tc /sundot/nginx/nginx.conf
+```
+
+### Nginx 启动
+
+安装指定的配置文件启动Nginx：
+
+```
+[root@iz2zea1fyfqa1d360k1vjaz ~]# /sundot/nginx/sbin/nginx -c /sundot/nginx/nginx.conf
 ```
 
