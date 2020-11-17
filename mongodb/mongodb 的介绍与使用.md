@@ -82,15 +82,210 @@ db.author.insertMany([
 
 ## 更新
 
+### 更新操作符
+
+| 操作符名称   | 描述                               | 示例 |
+| ------------ | ---------------------------------- | ---- |
+| $currentDate | 设置为当前时间                     |      |
+| $inc         | 原子级增减操作                     |      |
+| $min         | 当传入的值比数据库中的值小时才更新 |      |
+| $max         | 当传入的值比数据库中的值大时才更新 |      |
+| $mul         | 原子级相乘                         |      |
+| $rename      | 重命名字段                         |      |
+| $set         | 设置字段值                         |      |
+| $setOnInsert | 仅当                               |      |
+| $unset       | 移除字段                           |      |
+
+
+
+### updateOne
+
+用于文档中部分字段的更新。
+
 ```
-db.author.updateOne({"name":"bobo"},
+db.author.updateOne(
+{"name":"bobo"},
 {	
-	$set:{"age":20},
+	$set:{"age":20,"view":1},
 	$inc:{"view",-2}
 }) 
 ```
 
 方法的第一个参数是更新的条件，第二个是更新的内容。
+
+```
+db.author.updateOne(
+    {"name":{$in:["wy","aaa"]}},
+    {$inc:{"age":1.1}, $set:{"age2":NumberInt(100)}}
+)
+```
+
+### updateMany
+
+### replaceOne
+
+用于整个文档的替换。
+
+
+
+### 数组类型的字段更新
+
+| 操作符名称        | 描述                                                         | 示例 |
+| ----------------- | ------------------------------------------------------------ | ---- |
+| $                 | 更新数组的第一个元素                                         |      |
+| $[]               | 更新数组的所有元素                                           |      |
+| array.index       | 按照指定下标来更新元素，下标从0开始                          |      |
+| `$[<identifier>]` | 更新指定条件的元素                                           |      |
+| $addToSet         | 添加元素到数组（当元素不存在于原来的数组当中），会对元素去重 |      |
+| $pop              | 移除第一个或者最后一个元素，-1表示移除第一个，1表示移除最后一个 |      |
+| $pull             | 移除符合条件的数组元素                                       |      |
+| $push             | 添加元素，`$each`：添加多个元素；`$slice`：对数据切割；`$sort`：对数组进行排序；`$position`：指入插入的位置 |      |
+| $pullAll          | 移除指定元素                                                 |      |
+
+#### `$[<identifier>]`
+
+`$[<identifier>]`用于object类型的数组操作。根据 identifier 替换符来作为条件来更新数组元素。
+
+文档数据如下：
+
+```
+{
+    "_id" : ObjectId("5fb0e99910581bd335504686"),
+    "title" : "第一个问题",
+    "tags" : [ 
+        "bbb", 
+        "ccc"
+    ],
+    "best" : [ 
+        {
+            "content" : "da1"
+        }, 
+        {
+            "content" : "da2"
+        }, 
+        {
+            "content" : "da3"
+        }
+    ]
+}
+```
+
+将best中的object元素的content属性的值为da1的改为da221：
+
+```
+db.questions.updateOne(
+{"tags":{$in:["aaa"]}},
+{$set:{"best.$[elem].content":"da221"}}, {"arrayFilters":[{"elem.content":"da1"}]}
+)
+```
+
+其中`$set:{"best.$[elem].content":"da221"}`为替换符，elem相当于迭代器中的一个变量。
+
+#### `$`
+
+```
+.updateOne(
+{"tags":{$in:["AAA"]}},
+{$set:{"tags.$":"CCC"}})
+```
+
+`$`表示的是筛选结果后的第一个元素。
+
+#### array.index
+
+下标从0开始
+
+```
+db.questions.updateOne(
+{"tags":{$in:["AA"]}},
+{$set:{"tags.1":"fff"}})
+```
+
+#### $addToSet
+
+```
+db.questions.updateOne(
+{"tags":{$in:["AA"]}},
+{$addToSet:{"tags":"gg"}})
+```
+
+#### $pop
+
+移除第一个：
+
+```
+db.questions.updateOne(
+{"tags":{$in:["AA"]}},
+{$pop:{"tags":-1}})
+```
+
+移除最后一个，设为1。
+
+#### $pull
+
+将包含“fff”的tags数组找到，然后移除其中包含了元素为“gg”的元素。
+
+```
+db.questions.updateOne(
+{"tags":{$in:["fff"]}},
+{$pull:{"tags":{$in:["gg"]}}})
+```
+
+#### $pullAll
+
+同时移除“bbb“和”ccc“：
+
+```
+db.questions.updateOne(
+{"tags":{$in:["aaa"]}},
+{$pullAll:{"tags":["bbb","ccc"]}})
+```
+
+#### $push
+
+简单push，向数组中一次添加一个元素：
+
+```
+db.questions.updateOne(
+{"tags":{$in:["aaa"]}},
+{$push:{"tags":"bbb"}})
+```
+
+借助`$each`操作符，一次添加多个元素：
+
+```
+db.questions.updateOne(
+{"tags":{$in:["aaa"]}},
+{$push:{"tags":{$each:["bbb","ccc"]}}})
+```
+
+默认添加到元素的最后面。
+
+可以使用`$position`操作符，向指定位置添加元素。索引位置从0开始。
+
+将元素添加到最前面：
+
+```
+db.questions.updateOne(
+{"tags":{$in:["aaa"]}},
+{$push:{"tags":{$each:["bbb","ccc"], $position:0}}})
+```
+
+将元素添加到下标为3的位置，即第四个元素：
+
+```
+db.questions.updateOne(
+{"tags":{$in:["aaa"]}},
+{$push:{"tags":{$each:["hhh"], $position:3}}})
+```
+
+使用`$slice`操作符对数组进行切割：
+
+```
+
+```
+
+
 
 
 
@@ -289,8 +484,9 @@ db.getCollection('questions').find({"tags.name":{$eq:"T4"}})
 db.author.deleteOne({"name":"wy"})
 ```
 
+deleteOne和deleteMany。
 
 
 
+## 事务
 
- 
