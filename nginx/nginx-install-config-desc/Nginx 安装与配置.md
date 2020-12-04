@@ -223,3 +223,22 @@ nginx: configuration file /sundot/nginx/conf/nginx.conf test is successful
 [root@iz2zea1fyfqa1d360k1vjaz ~]# /sundot/nginx/sbin/nginx -c /sundot/nginx/nginx.conf
 ```
 
+### 查看开放的端口号
+
+```shell
+[root@localhost ~]#   firewall-cmd --list-all
+```
+
+### 设置开放的端口号
+
+```
+firewall-cmd --add-service=http --permanent
+firewall-cmd --add-port=80/tcp --permanent
+```
+
+### 重启防火墙
+
+```
+firewall-cmd --reload
+```
+
