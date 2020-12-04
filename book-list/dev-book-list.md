@@ -191,3 +191,16 @@
 ## 分布式
 
 《[数据密集型应用系统设计](https://book.douban.com/subject/30329536/)》
+
+
+
+## 架构
+
+《[系统架构-复杂系统的产品设计与开发](https://book.douban.com/subject/26938710/)》（9.1分）
+
+[微服务架构设计模式 (豆瓣) (douban.com)](https://book.douban.com/subject/33425123/)（9.1分）
+
+[软件架构设计 (豆瓣) (douban.com)](https://book.douban.com/subject/30443578/)（8.8分）
+
+[从零开始学架构 (豆瓣) (douban.com)](https://book.douban.com/subject/30335935/)（8.3分）
+
