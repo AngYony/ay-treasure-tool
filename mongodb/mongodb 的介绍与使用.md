@@ -476,6 +476,14 @@ db.getCollection('questions').find({"tags.name":{$eq:"T4"}})
 
 虽然上述两个语句得到的结果相同，但是，$elemMatch后面可以继续使用查询表达式，还可以接着使用各种操作符，提供了更高的灵活性。
 
+### 排序
+
+```
+db.getCollection('author').find({}).sort({"age":-1,"name":-1})
+```
+
+
+
 ## 删除
 
 删除 name 为 wy 的语句：
@@ -488,5 +496,56 @@ deleteOne和deleteMany。
 
 
 
+## 索引
+
+可以调用explain()方法查看查询的执行情况。
+
+```
+db.getCollection('author').find({}).sort({"age":-1,"name":-1})
+.explain("executionStats")
+```
+
+| 索引类型              | 说明 |
+| --------------------- | ---- |
+| _id                   |      |
+| 单键索引              |      |
+| 复合索引              |      |
+| 多键索引              |      |
+| 2dsphere 地理空间索引 |      |
+| 文本索引              |      |
+
+### 创建索引
+
+```
+db.author.createIndex({"name": -1 })
+```
+
+1表示升序创建，-1表示降序创建。
+
+后台创建索引：
+
+```
+db.author.createIndex({"name": -1 } ,{background:true})
+```
+
+
+
+
+
+
+
+### 索引低效操作
+
+- 取反效率低
+- $nin 总是进行全表扫描
+- 一次查询只能使用一个索引，`$or` 除外，但是`$or`使用多个索引查询之后再将结果进行合并的效率并不高，所以不推荐使用（尽可能使用`$in`）。
+- 嵌套对象字段索引与基本字段的处理方式一致。
+
+
+
+
+
 ## 事务
+
+
 
