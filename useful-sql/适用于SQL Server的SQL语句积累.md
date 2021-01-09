@@ -321,3 +321,152 @@ SELECT ColumnName,ColumnValue FROM (
 	) up
 ```
 
+
+
+## 字符串指定字符分割为list
+
+```mssql
+-- 字符串指定字符分割为list 
+CREATE FUNCTION [dbo].[splitl] ( 
+    @String VARCHAR(MAX), 
+    @Delimiter VARCHAR(MAX) 
+) RETURNS @temptable TABLE (items VARCHAR(MAX)) AS 
+BEGIN 
+    DECLARE @idx INT=1 
+    DECLARE @slice VARCHAR(MAX)  
+    IF LEN(@String) < 1 OR LEN(ISNULL(@String,'')) = 0 
+        RETURN 
+    WHILE @idx != 0 
+    BEGIN 
+        SET @idx = CHARINDEX(@Delimiter,@String) 
+        IF @idx != 0 
+            SET @slice = LEFT(@String,@idx - 1) 
+        ELSE 
+            SET @slice = @String 
+        IF LEN(@slice) > 0 
+            INSERT INTO @temptable(items) VALUES(@slice) 
+        SET @String = RIGHT (@String, LEN(@String) - @idx) 
+        IF LEN(@String) = 0 
+            BREAK 
+    END 
+    RETURN 
+END 
+GO 
+-- 调用方式  
+SELECT * FROM dbo.splitl('aaa|bbb|ccc','|') 
+```
+
+## 数字去掉末尾的0
+
+```mssql
+-- 数字去掉末尾的0 
+CREATE function [dbo].[ClearZero](@inValue varchar(50)) 
+returns varchar(50) 
+as 
+begin 
+declare @returnValue varchar(20) 
+if(@inValue='') 
+   set @returnValue='' --空的时候为空 
+else if (charindex('.',@inValue) ='0') 
+   set @returnValue=@inValue --针对不含小数点的 
+else if ( substring(reverse(@inValue),patindex('%[^0]%',reverse(@inValue)),1)='.') 
+          set @returnValue = 
+            left(@inValue,len(@inValue)-patindex('%[^0]%',reverse(@inValue)))  
+            --针对小数点后全是0的 
+      else 
+          set @returnValue =left(@inValue,len(@inValue)-  
+                                 patindex('%[^0]%.%',reverse(@inValue))+1) --其他任何情形 
+return @returnValue 
+end 
+--调用示例 
+SELECT dbo.ClearZero(258.250300) 
+```
+
+
+
+## 创建表、视图、函数、存储过程判断是否存在
+
+```mssql
+/*判断函数/方法是否存在,若存在则删除函数/方法*/ 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE name = 'Func_Name')  
+DROP FUNCTION Func_Name; 
+GO 
+--创建函数/方法 
+CREATE FUNCTION Func_Name 
+( 
+    @a INT 
+) 
+RETURN INT 
+AS 
+BEGIN 
+--coding 
+END 
+GO 
+/*判断存储过程是否存在,若存在则删除存储过程*/ 
+IF EXISTS (OBJECT_NAME('Proc_Name','P') IS NOT NULL DROP PROC Proc_Name; 
+GO 
+--创建存储过程 
+CREATE PROC Proc_Name 
+AS SELECT * FROM Table_Name 
+GO 
+/*判断数据表是否存在,若存在则删除数据表*/ 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE name = 'Table_Name')  
+DROP VIEW Table_Name; 
+GO 
+--创建数据表 
+CREATE TABLE Table_Name 
+( 
+    Id INT PRIMARY KEY NOT NULL 
+) 
+/*判断视图是否存在,若存在则删除视图*/ 
+IF EXISTS (SELECT * FROM sys.views WHERE name = 'View_Name')  
+DROP VIEW View_Name  
+GO 
+--创建视图 
+CREATE VIEW View_Name AS 
+    SELECT SELECT * FROM table_name 
+GO 
+```
+
+## 金额转换为大写
+
+```mssql
+/* 
+    说明：数字金额转中文金额 
+    示例：187.4 转成 壹佰捌拾柒圆肆角整 
+*/ 
+ 
+CREATE FUNCTION [dbo].[CNumeric](@num numeric(14,2)) 
+    returns nvarchar(100) 
+BEGIN 
+    Declare @n_data nvarchar(20),@c_data nvarchar(100),@n_str nvarchar(10),@i int 
+    Set @n_data=right(space(14)+cast(cast(abs(@num*100) as bigint) as nvarchar(20)),14) 
+    Set @c_data='' 
+    Set @i=1 
+ 
+    WHILE @i<=14 
+    Begin 
+        set @n_str=substring(@n_data,@i,1) 
+        if @n_str<>'' 
+        begin 
+        IF not ((SUBSTRING(@n_data,@i,2)= '00') or 
+        ((@n_str= '0') and ((@i=4) or (@i=8) or (@i=12) or (@i=14)))) 
+        SET @c_data=@c_data+SUBSTRING( N'零壹贰叁肆伍陆柒捌玖',CAST(@n_str AS int)+1,1) 
+        IF not ((@n_str= '0') and (@i <> 4) and (@i <> 8) and (@i <> 12)) 
+        SET @c_data=@c_data+SUBSTRING( N'仟佰拾亿仟佰拾万仟佰拾圆角分',@i,1) 
+        IF SUBSTRING(@c_data,LEN(@c_data)-1,2)= N'亿万' 
+        SET @c_data=SUBSTRING(@c_data,1,LEN(@c_data)-1) 
+        END 
+        SET @i=@i+1 
+    END 
+    IF @num <0 
+        SET @c_data= '（负数）'+@c_data 
+    IF @num=0 
+        SET @c_data= '零圆' 
+    IF @n_str= '0' 
+        SET @c_data=@c_data+ '整' 
+ 
+    RETURN(@c_data) 
+END 
+```
+
