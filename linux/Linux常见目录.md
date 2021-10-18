@@ -26,3 +26,9 @@
 
 
 
+
+
+## 常用习惯
+
+- 在/home目录下，创建一个software目录，用来存放要安装的软件包。eg：`/home/software/jdk-89191-linux-x64.tar.gz`
+- 在/usr目录下，创建要安装的软件目录，然后将软件包安装在该目录下。eg：`/usr/java`
