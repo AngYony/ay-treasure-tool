@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "S1", "S1\S1.pyproj", "{491FD1F3-8B34-4A5C-821C-4C4B5823F81A}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "S2", "S2\S2.pyproj", "{B8CF5507-78CC-493A-8712-7A62F53C00B9}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "S3", "S3\S3.pyproj", "{6C19A4C6-EF85-4A6A-A454-D5984099927F}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Dictionary", "Dictionary\Dictionary.pyproj", "{4B49459D-789F-40F4-AB53-1662F7304841}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "InputAndWhile", "InputAndWhile\InputAndWhile.pyproj", "{56774D69-370E-47B3-AF0A-FB55F48CAFEB}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FunctionModule", "FunctionModule\FunctionModule.pyproj", "{20763FD8-570E-4545-9B25-63C582806188}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ClassStudy", "ClassStudy\ClassStudy.pyproj", "{F896F2DC-96C8-498B-9991-E0326F21E845}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FilesAndExceptions", "FilesAndExceptions\FilesAndExceptions.pyproj", "{39EB0816-26B2-4B33-B93E-1F0D2B729E1F}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CodeTest", "CodeTest\CodeTest.pyproj", "{A2FD77DB-8EFD-443F-AE07-D46A77650F01}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PygameSample", "PygameSample\PygameSample.pyproj", "{DD6FFFDD-BDED-4EA6-B2B7-4F335BEC4527}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "MatplotlibSample", "MatplotlibSample\MatplotlibSample.pyproj", "{2CB765D8-F47D-42D2-9273-24853D7926EA}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CSVAndJSONSample", "CSVAndJSONSample\CSVAndJSONSample.pyproj", "{44130FD0-1D21-418E-B2A2-6512F2E7CF45}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CallWebAPISample", "CallWebAPISample\CallWebAPISample.pyproj", "{F5886D62-19DA-461D-B4EB-ABDFA6A017B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{491FD1F3-8B34-4A5C-821C-4C4B5823F81A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{491FD1F3-8B34-4A5C-821C-4C4B5823F81A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8CF5507-78CC-493A-8712-7A62F53C00B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8CF5507-78CC-493A-8712-7A62F53C00B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C19A4C6-EF85-4A6A-A454-D5984099927F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C19A4C6-EF85-4A6A-A454-D5984099927F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B49459D-789F-40F4-AB53-1662F7304841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B49459D-789F-40F4-AB53-1662F7304841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56774D69-370E-47B3-AF0A-FB55F48CAFEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56774D69-370E-47B3-AF0A-FB55F48CAFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20763FD8-570E-4545-9B25-63C582806188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20763FD8-570E-4545-9B25-63C582806188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F896F2DC-96C8-498B-9991-E0326F21E845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F896F2DC-96C8-498B-9991-E0326F21E845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39EB0816-26B2-4B33-B93E-1F0D2B729E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39EB0816-26B2-4B33-B93E-1F0D2B729E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FD77DB-8EFD-443F-AE07-D46A77650F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FD77DB-8EFD-443F-AE07-D46A77650F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD6FFFDD-BDED-4EA6-B2B7-4F335BEC4527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD6FFFDD-BDED-4EA6-B2B7-4F335BEC4527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CB765D8-F47D-42D2-9273-24853D7926EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CB765D8-F47D-42D2-9273-24853D7926EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44130FD0-1D21-418E-B2A2-6512F2E7CF45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44130FD0-1D21-418E-B2A2-6512F2E7CF45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5886D62-19DA-461D-B4EB-ABDFA6A017B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5886D62-19DA-461D-B4EB-ABDFA6A017B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA88D550-D0DE-46E7-989F-46454F4BF48E}
+	EndGlobalSection
+EndGlobal
