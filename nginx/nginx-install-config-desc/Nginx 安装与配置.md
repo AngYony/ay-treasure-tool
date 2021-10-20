@@ -17,40 +17,135 @@
 nginx version: nginx/1.18.0
 ```
 
+
+
 ### Nginx 源码下载链接
 
 http://nginx.org/download/
 
-### 下载源码并解压到安装目录
-
-创建安装目录（或进入到安装目录），下载文件并解压：
+下载完成之后，将软件安装包上传到Linux系统上，如放在如下目录：/home/software
 
 ```
-[root@VM-0-5-centos ~]# mkdir -p /opt/data/source
-[root@VM-0-5-centos ~]# cd /opt/data/source
-[root@VM-0-5-centos source]# wget http://nginx.org/download/nginx-1.17.8.tar.gz
-[root@VM-0-5-centos source]# tar zxmf nginx-1.17.8.tar.gz
+[root@VM-0-5-centos ~]# mkdir -p /home/software
+[root@VM-0-5-centos ~]# cd /home/software
 ```
 
-### 安装编译工具及依赖项
+
+
+### 安装依赖环境
+
+- 安装 gcc 环境
+
+  ```
+  yum install gcc-c++
+  ```
+
+- 安装 PCRE 库，用于解析正则表达式
+
+  ```
+  yum install -y pcre pcre-devel
+  ```
+
+- 安装 zlib 压缩和解压缩依赖
+
+  ```
+  yum install -y zlib zlib-devel
+  ```
+
+- 安装 SSL 安全的加密的套接字协议层，用于HTTP安全传输，也就是https
+
+  ```
+  yum install -y openssl openssl-devel
+  ```
+
+
+
+上述四项是必须要安装的，也可以直接使用下述命令一步安装编译工具及依赖项：
 
 ```
 yum -y install gcc pcre-devel zlib-devel openssl-devel libxml2-devel libxslt-devel gd-devel GeoIP-devel jemalloc-devel libatomic_ops-devel perl-devel perl-ExtUtils-Embed
 ```
 
-### 编译 Nginx 所有功能模块
+ 
 
-如果要指定Nginx的安装目录，可以在编译时使用prefix选项进行设置：
+### 解压安装包
 
-```shell
-./configure --prefix=/sundot/nginx
+解压，需要注意，解压后得到的是源码，源码需要编译后才能安装。
+
+```
+tar -zxvf nginx-1.16.1.tar.gz
 ```
 
-编译：
+
+
+### 创建 nginx 临时目录
+
+编译之前，先创建nginx临时目录，如果不创建，在启动nginx的过程中会报错。
+
+```
+mkdir /var/temp/nginx -p
+```
+
+
+
+### 编译 Nginx 所有功能模块
+
+第一步：进入到nginx源码目录，执行下述命令，创建出makefile文件，makeifile文件是进行编译和安装的必要文件。
+
+```
+# 进入到目录
+cd nginx-1.17.8
+# 执行命令：
+./configure \
+--prefix=/usr/local/nginx \
+--pid-path=/var/run/nginx/nginx.pid \
+--lock-path=/var/lock/nginx.lock \
+--error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log \
+--with-http_gzip_static_module \
+--http-client-body-temp-path=/var/temp/nginx/client \
+--http-proxy-temp-path=/var/temp/nginx/proxy \
+--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \
+--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \
+--http-scgi-temp-path=/var/temp/nginx/scgi
+```
+
+上述配置命令说明：
+
+| 命令                          | 解释                                 |
+| ----------------------------- | ------------------------------------ |
+| –prefix                       | 指定nginx安装目录                    |
+| –pid-path                     | 指向nginx的pid                       |
+| –lock-path                    | 锁定安装文件，防止被恶意篡改或误操作 |
+| –error-log                    | 错误日志                             |
+| –http-log-path                | http日志                             |
+| –with-http_gzip_static_module | 启用gzip模块，在线实时压缩输出数据流 |
+| –http-client-body-temp-path   | 设定客户端请求的临时目录             |
+| –http-proxy-temp-path         | 设定http代理临时目录                 |
+| –http-fastcgi-temp-path       | 设定fastcgi临时目录                  |
+| –http-uwsgi-temp-path         | 设定uwsgi临时目录                    |
+| –http-scgi-temp-path          | 设定scgi临时目录                     |
+
+第二步：make编译
+
+```
+make
+```
+
+第三步：安装
+
+```
+make install
+```
+
+或者
+
+也可以直接执行下述命令，将上面的三个步骤合在一起，注意prefix选项用于指定Nginx安装的位置：
 
 ```
 [root@VM-0-5-centos source]# cd nginx-1.17.8/
 [root@VM-0-5-centos source]# ./configure \
+--prefix=/usr/local/nginx \
 --with-threads \
 --with-file-aio \
 --with-http_ssl_module \
@@ -78,7 +173,16 @@ yum -y install gcc pcre-devel zlib-devel openssl-devel libxml2-devel libxslt-dev
 --with-stream_geoip_module=dynamic \
 --with-stream_ssl_preread_module \
 --with-compat \
---with-pcre-jit 
+--with-pcre-jit \
+--pid-path=/var/run/nginx/nginx.pid \
+--lock-path=/var/lock/nginx.lock \
+--error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log \
+--http-client-body-temp-path=/var/temp/nginx/client \
+--http-proxy-temp-path=/var/temp/nginx/proxy \
+--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \
+--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \
+--http-scgi-temp-path=/var/temp/nginx/scgi \
 make && make install
 ```
 
@@ -86,7 +190,42 @@ make && make install
 
 
 
-## 环境配置
+### 进入 sbin 目录启动nginx
+
+启动 nginx：
+
+```
+./nginx
+```
+
+停止 nginx：
+
+```
+./nginx -s stop
+```
+
+重新加载：
+
+```
+./nginx -s reload
+```
+
+到目前为止，nginx已经安装完成。
+
+
+
+### 注意事项
+
+- 如果在云服务器安装，需要开启默认的nginx端口：80
+- 如果在虚拟机/本地win/mac 安装，都需要关闭防火墙
+
+
+
+
+
+## 后续配置（可选）
+
+下述内容，在别人不知情的情况下，会增加复杂性。
 
 ### 把Nginx执行文件的路径添加到环境变量中（建议）
 
@@ -165,7 +304,11 @@ WantedBy=multi-user.target                         # 多用户环境下启动
 EOF
 ```
 
+
+
 ### 将 Nginx 服务注册为系统启动后自动启动
+
+该命令及下述命名均是将nginx添加到了环境变量后，执行的命令。
 
 ```
 [root@VM-0-5-centos ~]# systemctl enable nginx
@@ -217,7 +360,7 @@ nginx: configuration file /sundot/nginx/conf/nginx.conf test is successful
 
 ### Nginx 启动
 
-安装指定的配置文件启动Nginx：
+按照指定的配置文件启动Nginx：
 
 ```
 [root@iz2zea1fyfqa1d360k1vjaz ~]# /sundot/nginx/sbin/nginx -c /sundot/nginx/nginx.conf
