@@ -18,3 +18,10 @@ tar -zxvf wy.tar.gz -C ~/app/
 tail app.log
 ```
 
+如果想要动态的查看文件的最新变化，可以加上-f选项。
+
+```shell
+tail app.log -f
+```
+
+此时，一旦app.log文件发生了变化，都会反映在打开的窗口中。
