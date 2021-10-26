@@ -171,6 +171,217 @@ gzip_types text/plain application/javascript application/x-javascript text/css a
 
 ```
 
+#### upstream 负载均衡
+
+用于配置上游服务器（代理服务器），也就是请求被转发到要进行处理的服务器。
+
+通过upstream配置多台代理服务器组成集群，就可以实现nginx负载均衡。
+
+```nginx
+upstream myApp {
+    server 192.168.1.173:8080;
+    server 192.168.1.174:8080;
+    server 192.168.1.175:8080;
+}	
+```
+
+upstream需要结合server配置项一起使用：
+
+```nginx
+server {
+	listen 80;
+	server_name www.smallz.com;
+    
+    location / {
+        proxy_pass http://myApp;
+    }
+}
+```
+
+upstream块中的其他指令参数介绍如下。
+
+##### keepalive 提高吞吐量
+
+- keepalive：设置长连接处理的数量，要保持的连接数。
+- proxy_http_version：设置长连接http版本为1.1。
+- proxy_set_header：清除Connection header信息。
+
+```nginx
+upstream myApp {
+    server 192.168.1.173:8080;
+    server 192.168.1.174:8080;
+    
+    keepalive 32;
+}	
+
+server {
+	listen 80;
+	server_name www.smallz.com;
+    
+    location / {
+        proxy_pass http://myApp;
+        # 配置了keepalive时，必须配置以下内容
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+}
+```
+
+配置keepalive时，同时需要配置proxy_http_version和proxy_set_header。
+
+##### max_conns
+
+限制配置在upstream中的一台服务器的最大连接数，一般不需要配置。默认值为0，表示不做限制。
+
+```nginx
+upstream myApp {
+    server 192.168.1.173:8080 max_conns=200;
+    server 192.168.1.174:8080 max_conns=200;
+    server 192.168.1.175:8080;
+}
+```
+
+##### slow_start
+
+slow_start指令只存在于商业版的Nginx，目前开源版暂不支持。（可以尝试nginx -t 测试一下）
+
+会在指定时间内，慢慢将权重从0升级到配置的权重值。该指令只适用于权重策略，并且不适用于单台服务器（配置了也会失效）。
+
+```nginx
+upstream myApp {
+    server 192.168.1.173:8080 weight=6 slow_start=60s;
+    server 192.168.1.174:8080 weight=2;
+    server 192.168.1.175:8080 weight=2;
+}	
+```
+
+在60秒内，权重慢慢从0调整到6。
+
+##### down
+
+指定某台服务器不可用。
+
+```nginx
+upstream myApp {
+    server 192.168.1.173:8080 down;
+    server 192.168.1.174:8080;
+    server 192.168.1.175:8080;
+}	
+```
+
+配置了down指令的该台服务器，不会被用户访问到。在nginx中，某台服务器不可用时，最好的做法是添加down，尤其是在负载均衡配置中，不要直接删除服务器配置，而是标注down。这是因为，在负载均衡中，可能会牵扯到资源分配的算法，比如ip_hash，此时直接删除配置项，会导致基于之前算法的服务器的缓存和会话全部丢失。
+
+##### backup
+
+配置了backup指令的服务器，一开始是不会被访问到的，只有在其他服务器挂掉的情况下，才会被访问到。
+
+```nginx
+upstream myApp {
+    server 192.168.1.173:8080 backup;
+    server 192.168.1.174:8080 weight=2;
+    server 192.168.1.175:8080 weight=2;
+}	
+```
+
+##### max_fails、fail_timeout
+
+max_fails：最大失败次数，默认为1；
+
+fail_timeout：在请求达到max_fails设置的失败次数后，设置等待多长时间再次尝试请求到该服务器。默认为10秒。
+
+```nginx
+upstream myApp {
+    server 192.168.1.173:8080 max_fails=2 fail_timeout=15s;
+    server 192.168.1.174:8080 weight=2;
+    server 192.168.1.175:8080 weight=2;
+}	
+```
+
+则代表在15秒内请求某一server失败达到2次后，则认为该server已经挂了或者宕机了，随后再过15秒，这15秒内不会有新的请求到达刚刚挂掉的节点上，而是会请求到正常运作的server，15秒后会再有新请求尝试连接挂掉的server，如果还是失败，重复上一过程，直到恢复。
+
+
+
+
+
+#### nginx负载均衡的几种策略
+
+- 轮询，默认策略，按照轮流形式转发给应用服务器。
+- 权重，加权轮询。在轮询的基础上，进行权重设置。
+- ip_hash
+
+##### 轮询
+
+nginx负载均衡的默认模式。
+
+##### 权重
+
+在轮询的基础上，对于性能强的服务器，可以在nginx进行权重设置来实现资源的最大化利用。
+
+配置权重时，需要为server指定权重级别，默认为1，值越大，被分配处理的可能性越大：
+
+```nginx
+upstream myApp {
+    server 192.168.1.173:8080 weight=1;
+    server 192.168.1.174:8080 weight=2;
+    server 192.168.1.175:8080 weight=5;
+}
+```
+
+配置了上述权重后，假如此时有8个请求，其中会有5个被转发到第三台服务器进行处理。
+
+##### ip_hash
+
+根据ip的hash值算法，去分配服务器。hash(ip) % node_counts = index （hash值 % 节点数= 索引下标对应的服务器节点）
+
+同一个ip，在多次请求时，会被转发到同一台服务器上。这样就保证，每次请求时，所有的会话都处于同一个服务中，这样服务器中的缓存，都可以拿到。
+
+```nginx
+upstream myApp {
+	ip_hash;
+    server 192.168.1.173:8080;
+    server 192.168.1.174:8080;
+    server 192.168.1.175:8080;
+}	
+```
+
+注意：当使用ip_hash策略时，一旦某台服务器不再使用了，不能直接删除该行配置，只能标注down。这是因为一旦删除该行配置，会导致ip_hash的重新计算，导致之前服务器上的会话和缓存丢失。
+
+ip_hash带来的问题：
+
+- 一旦某个服务器节点添加或移除，都会导致分配算法的重新计算和分配，这样原来的缓存和会话都会丢失。
+
+##### url_hash
+
+对url进行hash求值，去分配不同的服务器节点。hash(url) % node_counts = index
+
+```nginx
+upstream myApp {
+	# 引入内置变量
+	hash $request_uri;
+    server 192.168.1.173:8080;
+    server 192.168.1.174:8080;
+    server 192.168.1.175:8080;
+}	
+```
+
+##### least_conn
+
+基于最少连接数分配服务器节点。哪个当前的连接数最少，就优先选择哪台服务器。
+
+```nginx
+upstream myApp {
+	# 引入内置变量
+	least_conn;
+    server 192.168.1.173:8080;
+    server 192.168.1.174:8080;
+    server 192.168.1.175:8080;
+}	
+```
+
+
+
+
+
 #### server
 
 虚拟主机配置，http下面可以有多个server配置。
@@ -217,6 +428,49 @@ server {
 ```
 
 一般可以将server的内容，放在一个独立的配置文件中，例如：wy_server.conf，然后使用include引入进来。
+
+##### add_header 配置跨域
+
+```nginx
+server {
+	listen 90;
+    server_name localhost;
+    
+    #允许跨域请求的域，*代表所有
+    add_header 'Access-Control-Allow-Origin' *;
+    #允许带上cookie请求
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    #允许请求的方法，比如 GET/POST/PUT/DELETE
+    add_header 'Access-Control-Allow-Methods' *;
+    #允许请求的header
+    add_header 'Access-Control-Allow-Headers' *;
+    
+    location ....
+    ...
+}
+```
+
+##### valid_referers 配置静态资源防盗链
+
+```nginx
+server {
+	listen 90;
+    server_name localhost;
+    #对源站点验证
+    valid_referers *.imooc.com; 
+    #非法引入会进入下方判断
+    if ($invalid_referer) {
+        return 403;
+    } 
+    
+    location ...
+    ...
+}
+```
+
+上述配置表示，只有在以.imooc.com结尾的站点中，访问资源才有效。可以实现，其他站点引用图片链接，被拒绝响应的功能。
+
+
 
 ##### locatoin 路由规则
 
@@ -270,7 +524,7 @@ server {
 
   
 
-##### root 和 alias 区别
+###### root 和 alias 区别
 
 假如服务器路径为：/home/wysrc/wy/files/img/face.png
 
