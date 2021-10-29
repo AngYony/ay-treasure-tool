@@ -123,6 +123,12 @@ make && make install
   pidfile /var/run/redis_6379.pid
   ```
 
+- 设置redis默认数据库的数量，一般不需要更改：
+
+  ```shell
+  databases 16
+  ```
+
   
 
 配置完成之后，保存退出。
