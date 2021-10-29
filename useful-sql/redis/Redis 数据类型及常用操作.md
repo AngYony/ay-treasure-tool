@@ -689,13 +689,192 @@ OK
 
 ## zset
 
-不允许放入重复的元素，元素的顺序是有序的。
+sorted set，不允许放入重复的元素，元素的顺序是有序的。
 
+与set相比，除了有序之外，在使用时，不仅要指定元素名还需要指定每个元素的score值，zset将会根据score值进行排序。
 
+### zadd
 
+向set中添加元素，指定元素名和score值：
 
+```shell
+127.0.0.1:6379> zadd zset1 10 AA 20 BB 30 CC 40 DD 50 EE
+(integer) 5
+127.0.0.1:6379> zrange zset1 0 -1 withscores
+ 1) "AA"
+ 2) "10"
+ 3) "BB"
+ 4) "20"
+ 5) "CC"
+ 6) "30"
+ 7) "DD"
+ 8) "40"
+ 9) "EE"
+10) "50"
+```
 
+如果存在元素名，新的score值，会覆盖旧的：
 
+```shell
+127.0.0.1:6379> zadd zset1 15 AA
+(integer) 0
+127.0.0.1:6379> zadd zset1 15 abc 23 xyz
+(integer) 2
+127.0.0.1:6379> zrange zset1 0 -1 withscores
+ 1) "AA"
+ 2) "15"
+ 3) "abc"
+ 4) "15"
+ 5) "BB"
+ 6) "20"
+ 7) "xyz"
+ 8) "23"
+ 9) "CC"
+10) "30"
+11) "DD"
+12) "40"
+13) "EE"
+14) "50"
+```
+
+### zrange
+
+只显示元素名：
+
+```
+127.0.0.1:6379> zrange zset1 0 -1
+1) "AA"
+2) "BB"
+3) "CC"
+4) "DD"
+5) "EE"
+```
+
+显示元素名和score：
+
+```shell
+127.0.0.1:6379> zrange zset1 0 -1 withscores
+ 1) "AA"
+ 2) "10"
+ 3) "BB"
+ 4) "20"
+ 5) "CC"
+ 6) "30"
+ 7) "DD"
+ 8) "40"
+ 9) "EE"
+10) "50"
+```
+
+### zrank
+
+获取zset中，指定元素的索引下标，从0开始。
+
+```shell
+127.0.0.1:6379> zrange zset1 0 -1
+1) "AA"
+2) "abc"
+3) "BB"
+4) "xyz"
+5) "CC"
+6) "DD"
+7) "EE"
+127.0.0.1:6379> zrank zset1 xyz
+(integer) 3
+```
+
+### zscore
+
+获取指定元素的score值。
+
+```
+127.0.0.1:6379> zscore zset1 xyz
+"23"
+```
+
+### zcard
+
+获取zset元素个数。
+
+```shell
+127.0.0.1:6379> zcard zset1
+(integer) 7
+```
+
+### zcount 和 zrangebyscore
+
+zcount ：获取score在指定范围内的元素个数。
+
+zrangebyscore：获取score在指定范围内的元素集。
+
+例如，获取 score>=20 && score <=40 的元素个数：
+
+```shell
+127.0.0.1:6379> zcount zset1 20 40
+(integer) 4
+```
+
+对应的，如果想要获取score>=20 && score <=40 的元素有哪些：
+
+```shell
+127.0.0.1:6379> zrangebyscore  zset1 20 40
+1) "BB"
+2) "xyz"
+3) "CC"
+4) "DD"
+```
+
+如果想要查看对应的score值，可以加上withscores关键字：
+
+```shell
+127.0.0.1:6379> zrangebyscore  zset1 20 40 withscores
+1) "BB"
+2) "20"
+3) "xyz"
+4) "23"
+5) "CC"
+6) "30"
+7) "DD"
+8) "40"
+```
+
+默认是大于等于或小于等于，如果只想大于或小于，可以借助小括号使用如下语法。
+
+例如，获取 score>20 && score <40 的元素个数：
+
+```shell
+127.0.0.1:6379> zrangebyscore  zset1 (20 (40 withscores
+1) "xyz"
+2) "23"
+3) "CC"
+4) "30"
+```
+
+加了小括号表示不包括值本身的数据。
+
+zrangebyscore 可以结合limit实现子集筛选。
+
+例如在zrangebyscore结果集中，使用limit从索引为1的下标开始，截取2个元素。
+
+```shell
+127.0.0.1:6379> zrangebyscore  zset1 20 40
+1) "BB"
+2) "xyz"
+3) "CC"
+4) "DD"
+127.0.0.1:6379> zrangebyscore  zset1 20 40 limit 1 2
+1) "xyz"
+2) "CC"
+```
+
+### zrem
+
+从zset中删除指定名称的元素，可以同时指定多个member名称。
+
+```shell
+127.0.0.1:6379> zrem zset1 xyz abc
+(integer) 2
+```
 
 
 
