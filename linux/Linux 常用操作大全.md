@@ -25,3 +25,12 @@ tail app.log -f
 ```
 
 此时，一旦app.log文件发生了变化，都会反映在打开的窗口中。
+
+### 将一个文件复制到另一台服务器上
+
+使用scp命令实现文件的发送，例如将当前目录下的sentinel.conf文件，复制到192.168.171.200的/usr/local/redis/目录中：
+
+```
+scp sentinel.conf root@192.168.171.200:/usr/local/redis/
+```
+
