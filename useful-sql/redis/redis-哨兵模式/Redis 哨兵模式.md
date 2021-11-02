@@ -97,9 +97,17 @@ scp sentinel.conf root@192.168.171.201:/usr/local/redis/
 
 ### 启动
 
+分别在配置了sentinel.conf文件的节点上，执行下述命令来启动哨兵。
 
+```shell
+[root@localhost redis]# redis-sentinel sentinel.conf 
+```
 
+![image-20211102100151870](assets/image-20211102100151870.png)
 
+启动完成之后，可以检查一下redis的进程：
+
+![image-20211102100551355](assets/image-20211102100551355.png)
 
 
 
