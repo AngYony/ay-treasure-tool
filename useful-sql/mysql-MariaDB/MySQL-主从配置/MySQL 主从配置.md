@@ -10,9 +10,9 @@
 
 ## 主节点的配置
 
-编辑 /etc/my.cnf 文件：
+在主节点服务器上编辑 /etc/my.cnf 文件：
 
-- 配置log-bin，指定文件的名称，配置server-id，默认为1：
+- 配置log-bin，指定MySQL的bin-log的名称；配置server-id，MySQL实例中全局唯一，并且大于0，这里设置为1：
 
   ![image-20211104150719214](assets/image-20211104150719214.png)
 
@@ -38,7 +38,7 @@
 
   一旦锁表之后，此时再往主节点写入任何数据都将被阻塞。
 
-- 在主节点上找到log-bin的位置，执行`SHOW MASTER STATUS`命令即可：
+- 在主节点上查看log-bin的文件名和位置，执行`SHOW MASTER STATUS`命令即可：
 
   ![image-20211104152941441](assets/image-20211104152941441.png)
 
@@ -68,9 +68,9 @@
 
 ## 从节点的配置：
 
-编辑/etc/my.cnf文件：
+在从节点服务器上编辑/etc/my.cnf文件：
 
-- 配置server-id，值不能和主节点的server-id相同：
+- 配置server-id，MySQL实例中全局唯一，值不能和主节点的server-id相同：
 
   ![image-20211104151004147](assets/image-20211104151004147.png)
 
@@ -90,13 +90,21 @@
 
   ![image-20211104160056247](assets/image-20211104160056247.png)
 
-  - master_user指定的是主节点设置的名称，这里是“repl”；
-  - master_log_file 和 master_log_pos 是主节点执行了`show master status`语句之后得到的信息（见主节点相关配置）。
+  - master_host：MySQL主节点的地址；
+  - master_port：MySQL主节点的端口号（数值类型），不指定会使用默认端口号；
+  - master_user：备份账户的用户名；
+  - master_password：备份账户的密码；
+  - master_log_file ：bin-log的文件名；
+  - master_log_pos：bin-log的位置（数值类型）； 是主节点执行了`show master status`语句之后得到的信息（见主节点相关配置）。
 
-- 在从节点上执行 `start slave`，开始同步数据。
+- 在从节点上执行 `start slave`，开始同步数据：
 
   ![image-20211104160537032](assets/image-20211104160537032.png)
 
-  
+- 查看从节点的MySQL状态：
+
+  ```mysql
+  show slave status;
+  ```
 
   
