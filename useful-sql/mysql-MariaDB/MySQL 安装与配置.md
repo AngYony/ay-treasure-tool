@@ -1,6 +1,18 @@
-# Docker 快速安装 Mysql
+# MySQL 安装与配置
 
 
+
+## 软件包安装
+
+可以参考以下文章说明：
+
+MySQL8.0+ 安装：https://class.imooc.com/lesson/1236#mid=29442
+
+图文教程：https://class.imooc.com/lesson/1236#mid=30704
+
+
+
+## Docker 快速安装 Mysql
 
 ### 拉取mysql镜像文件
 
