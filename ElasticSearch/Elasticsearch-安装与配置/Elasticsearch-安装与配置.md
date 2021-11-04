@@ -1,5 +1,11 @@
 # Elasticsearch 安装与配置
 
+由于Elasticsearch需要基于java环境运行，因此安装前必须先安装好java11。
+
+
+
+
+
 
 
 ### 下载安装包
@@ -89,6 +95,10 @@ elasticsearch目录介绍：
 
   默认端口号，也可以自定义修改，默认是9200，如上图所示。
 
+- 配置允许跨域访问elasticsearch，默认是没有该内容的，需要手动增加，一般写在Network部分：
+
+  ![image-20211104104834240](assets/image-20211104104834240.png)
+
 - 配置集群发现的节点，这里的节点名称要和上文的节点名称一致：
 
   ![image-20211103184123529](assets/image-20211103184123529.png)
@@ -132,6 +142,8 @@ elasticsearch不允许使用root权限，因此需要将目录的权限授权给
 假如启动之后，发现节点是停止状态，出现如下问题：
 
 ![image-20211103190715081](assets/image-20211103190715081.png)
+
+上图中一共出现了3个错误，需要针对每个错误类型调整配置，可以谷歌搜索一下，下述仅是参考，实际要以具体错误具体分析。
 
 此时需要以root身份，对/etc/security/limits.conf文件的内容进行修改：
 
@@ -195,9 +207,19 @@ elasticsearch不允许使用root权限，因此需要将目录的权限授权给
 
 
 
+## 插件的安装
+
+### elasticsearch-head
+
+elasticsearch可视化插件，github有详细介绍。
+
+推荐使用谷歌浏览器的插件形式进行安装。https://chrome.google.com/webstore/category/extensions?utm_source=chrome-ntp-icon
 
 
-### 5、插件的安装
+
+-------------------------------------todo-----------------------------
+
+
 
 查看已安装的插件：
 
