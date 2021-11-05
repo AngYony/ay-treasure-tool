@@ -30,6 +30,54 @@ AMQP 定义：是具有现代特征的二进制协议。是一个提供统一消
 
 
 
+## RabbitMQ 核心 API
+
+### Exchange（交换机）
+
+用于接收消息，并根据路由键转发消息所绑定的队列。
+
+![image-20211105163833217](assets/image-20211105163833217.png)
+
+Exchange和Queue的绑定是通过Routing Key做路由的，RoutingKey决定了消息通过Exchange流转到哪个Queue。
+
+Exchange 的属性有：
+
+- Name：交换机名称。
+- Type：交换机类型，可以是 direct（直接的方式）、topic（按照某种规则的方式）、fanout（类似于广播的方式）、headers（请求头的方式，很少用）、Delay  中的一种。
+- Durability：是否需要持久化，true为持久化。
+- Auto Delete：当最后一个绑定到Exchange上的队列删除后，自动删除该Exchange，不常用，一般不需要设置为自动删除。
+- Internal：当前 Exchange 是否用于 RabbitMQ 内部使用，默认为false。一旦设置为true，外部是无法访问的。
+- Arguments：扩展参数，用于扩展 AMQP 协议自制定化使用。
+
+
+
+#### Direct Exchange
+
+Direct模式下，所有发送到 Direct Exchange 的消息会被转发到 RouteKey 中指定的 Queue。必须对Exchange、RoutingKey、Queue三者进行显式绑定，才能够发送消息。
+
+![image-20211105171342604](assets/image-20211105171342604.png)
+
+注意：Direct 模式可以使用 RabbitMQ 自带的 Exchange：Default Exchange，所以不需要将 Exchange 进行任何绑定（Binding）操作，消息传递时，RouteKey 必须完全匹配队列名称才能被队列接收，否则该消息会被丢弃。如果使用的不是Default Exchange，必须对Exchange、RoutingKey、Queue三者进行显式绑定，才能够发送消息。
+
+#### Topic Exchange
+
+所有发送到 Topic Exchange 的消息被转发到所有关心 RouteKey 中指定 Topic 的 Queue 上。
+
+也就是说，Exchange 将 RouteKey 和某个 Topic 进行模糊匹配，此时队列需要绑定一个 Topic。
+
+![image-20211105171455852](assets/image-20211105171455852.png)
+
+Topic Exchange 可以使用通配符进行模糊匹配：
+
+- `#` ：匹配一个或多个词。例如：`log.#` 能够匹配到 `log.info.oa` ；
+- `*` ：匹配不多不少一个词。例如：`log.*` 只会匹配到`log.erro`；
+
+注意：虽然 Exchange 和 Queue 是多对多的关系，但在实际开发过程中，为了避免混乱，通常一种消息对应一种 RouteKey 的匹配规则，一类消息只发到一个 Exchange ，Exchange 后面再对应一个或多个 Queue。（保证Exchange 是单一的）
+
+
+
+
+
 ## RabbitMQ 整体架构图
 
 RabbitMQ的整体架构模型：
@@ -46,3 +94,4 @@ RabbitMQ的整体架构模型：
 RabbitMQ的消息流转过程：
 
 ![image-20211104192621869](assets/image-20211104192621869.png)
+
