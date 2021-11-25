@@ -31,6 +31,8 @@ systemctl start docker
 
 登录阿里云，在“控制台”-“产品与服务”-"容器镜像服务"-“镜像加速器”页，有相关的配置方法，复制对应的shell脚本即可。
 
+[容器镜像服务 (aliyun.com)](https://cr.console.aliyun.com/cn-qingdao/instances/mirrors)
+
 ```
 sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<-'EOF'
