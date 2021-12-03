@@ -93,6 +93,14 @@ docker ps -a
 docker logs 镜像Id号
 ```
 
+### 设置mysql随docker自启动
+
+```shell
+docker update --restart=always mysql容器id或mysql容器名称
+```
+
+
+
 ### 修改 Docker中的 MySql 外部连接策略（允许外部连接）：
 
 ~~方式一：修改全局配置文件/etc/mysql/my.conf，~~
