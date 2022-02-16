@@ -30,6 +30,8 @@ $ ssh-keygen -t rsa -C "your_email@example.com"
 
 是代表着身份认证的GitHub账户邮箱地址。 
 
+注意：不同平台的生成命令可能不同，例如gitee和github，需要参考具体网站的说明。
+
 ### config的三个作用域
 
 ```shell
@@ -86,6 +88,8 @@ $ git add b1.txt b
 ```shell
 $ git add -u
 ```
+
+
 
 ## git commit
 
@@ -162,6 +166,8 @@ $ git log --all --oneline
 $ git log --all --oneline -n2
 $ git log --all --oneline -n2 --graph
 ```
+
+
 
 ## git status
 
@@ -281,7 +287,13 @@ $ git checkout master
 $ git checkout -b fix_readme master
 ```
 
+假如已经存在远端分支，可以基于远端分支创建本地分支，并切换到该分支：
 
+```shell
+$ git checkout -b feature/bendi_dev origin/feature/dev
+```
+
+上述命令基于远端分支dev创建本地分支bendi_dev（这里为了区分，名称不同，实际开发中建议本地分支名称和远端分支名称保持一致），并切换到本地分支bendi_dev。
 
 
 
@@ -771,6 +783,14 @@ $ git remote add wygithub git@github.com:AngYony/ay-english-notes.git
 
 
 ## git push
+
+将本地的分支推送到远端，如果远端不存在分支，会创建对应的分支，并建立连接关系。
+
+例如，假如远端不存在分支dev，通过下述语句可以创建远端分支，并建立与本地分支dev的关系，执行完成之后，将会创建一个远端分支dev。
+
+```shell
+git push --set-upstream origin dev
+```
 
 将本地内容推送到远端。
 
