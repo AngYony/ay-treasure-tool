@@ -50,3 +50,7 @@ docker update --restart=no 容器id或容器名称
 docker update --restart=always $(docker ps -aq)
 ```
 
+
+
+
+

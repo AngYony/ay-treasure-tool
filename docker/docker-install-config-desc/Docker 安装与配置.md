@@ -8,6 +8,16 @@
 
 ### 安装docker命令
 
+下载get-docker.sh文件到本地，并执行该文件。
+
+```shell
+curl -fsSL get.docker.com -o get-docker.sh
+ls
+sudo sh get-docker.sh
+```
+
+上述操作，也可以直接使用下述方式一步完成：
+
 ```shell
 curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 ```

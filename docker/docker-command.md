@@ -27,6 +27,8 @@ $ systemctl is-active docker
 
 ## docker image（镜像）
 
+- docker image 是一个read-only 文件，这个文件包含文件系统，源码，库文件，依赖，工具等一些运行application所需要的文件。
+
 - Docker镜像可以简单理解为未运行的容器。
 - 容器的目的就是运行应用或服务，因此容器的镜像中必须包含应用/服务运行所必需的操作系统和应用文件。
 - 每个镜像的内部是一个精简的仅包含必要的操作系统（OS），同时还包含应用运行所必须的文件和依赖包。Docker镜像就像停止运行的容器。通过docker命令可以从某个镜像启动一个或多个容器。
@@ -521,6 +523,10 @@ $ docker image rm $(docker image ls -q -f before=mongo:3.2)
 
 ## docker container（容器）
 
+- container 是 ”一个运行中的docker image“
+- 实质是复制 image 并在 image 最上层加一层 read-write 的层（称之为 container layer，容器层）
+- 基于一个 image 可以创建多个 container
+
 容器是镜像的运行时实例，容器会共享其所在主机的操作系统的内核。
 
 容器会随着其中运行应用的退出而终止。
@@ -590,7 +596,7 @@ $ docker image rm $(docker image ls -q -f before=mongo:3.2)
 
 ### docker container ls
 
-列出所有在运行（UP）状态的容器。
+列出所有在运行（UP）状态的容器。旧的版本也可以使用`docker container ps`命令，效果相同。
 
 ```shell
 $ docker container ls
@@ -598,17 +604,29 @@ CONTAINER ID  IMAGE         COMMAND         CREATED        STATUS       PORTS NA
 77b2dc01fe0f  ubuntu:18.04  /bin/sh -c 'while tr  2 minutes ago  Up 1 minute        agitated_wright
 ```
 
-可以指定`-a`参数，让Docker列出所有容器，包括那些处于停止（Exited）状态的。
+#### 选项描述
 
-```shell
-$ docker container ls -a
-```
+- 可以指定`-a`参数，让Docker列出所有容器，包括那些处于停止（Exited）状态的。
+
+  ```shell
+  $ docker container ls -a
+  ```
+
+- -q：仅列出容器的id。
+
+  ```shell
+  $ docker container ls -aq
+  ```
+
+  
 
 ### docker container run
 
 docker container run命令用于启动新的指定镜像的容器，它告诉Docker daemon启动新的容器。
 
 当执行这个命令时，Docker daemon会先搜索Docker本地缓存，观察是否有命令所请求的镜像，如果本地没有该镜像，Docker会在Docker Hub中检查是否存在对应镜像，有的话就拉取到本地，并存储在本地缓存中，然后创建容器，并在其中运行指定的应用。
+
+容器的运行模式有两种：attached（前台模式）和 detached（后台模式）。
 
 #### 命令格式
 
@@ -624,10 +642,23 @@ docker container run [options] <iamge> <app>
 #### 选项描述
 
 - -it：这是两个参数，一个是 `-i`：交互式操作，一个是 `-t` 终端。其中，`-t` 选项让Docker分配一个伪终端（pseudo-tty）并绑定到容器的标准输入上， `-i` 则让容器的标准输入保持打开。-it表示将当前终端连接到容器的Shell终端之上。
+
+  ```shell
+  docker container run -it ubuntu sh
+  ```
+
+  执行上述命令，将会进入到Ubuntu的shell交互界面，一旦在shell中使用了“exit”执行退出操作，对应的container也会停止。如果不想退出，需要执行`docker container exec`相关命令（见下文）。
+
 - `--rm`：这个参数是说容器退出后随之将其删除。默认情况下，为了排障需求，退出的容器并不会立即删除，除非手动 `docker rm`。
+
 - --name：指定新建的容器的名称。
-- -d：表示后台模式，告知容器在后台运行。即：指定启动的容器在后台运行，这种后台启动的方式不会将当前终端连接到容器当中。
+
+- ==-d（--detach）==：表示后台模式，告知容器在后台运行。即：指定启动的容器在后台运行，这种后台启动的方式不会将当前终端连接到容器当中。
+
+  如果想要从detach模式切换回attached模式，可以使用`docker container attach 103ef`命令。
+
 - --restart：指定容器启动时采用哪种重启策略。
+
 - -P：将主机的端口与容器内的端口进行映射。
 
 #### 综合示例
@@ -663,9 +694,29 @@ nigelpoulton/pluralsight-docker-ci
 
 上述示例中的-p参数将Docker主机的80端口映射到容器内的8080端口，这意味着当有流量访问主机80端口的时候，流量会直接映射到容器内的8080端口。（原因是该镜像的容器在启动的时候会运行一个Web服务，监听的是容器内的8080端口，因此可以通过Docker主机的浏览器来访问该容器，只需要在浏览器中指定Docker主机的IP地址和默认的80端口即可）
 
+### docker container attach
+
+将容器由后台运行模式切换到前台运行模式。
+
+#### 命令格式
+
+```
+docker container attach <container-name or container-id> 
+```
+
+#### 综合示例
+
+重新启动名称为percy的容器：
+
+```shell
+$ docker container attach ff8
+```
+
+
+
 ### docker container exec
 
-该命令允许用户在运行状态的容器中，启动一个新进程，通常用于将Shell连接到一个运行中的容器终端。该命令会创建新的Bash或者PowerShell进程并且连接到容器，这意味着在当前Shell输入exit并不会导致容器终止，因为原Bash或者PowerShell进程还在运行当中。
+该命令允许用户在运行状态的容器中，启动一个新进程，通常用于将Shell连接到一个运行中的容器终端。==该命令会创建新的Bash或者PowerShell进程并且连接到容器，这意味着在当前Shell输入exit并不会导致容器终止，因为原Bash或者PowerShell进程还在运行当中==。
 
 #### 命令格式
 
@@ -680,6 +731,20 @@ options：选项参数
 container-name和container-id：这两个值都可以通过`docker container ls`命令，得到。
 
 command/app：指定进入到容器后需要运行的终端程序。
+
+#### 选项描述
+
+- -it：这是两个参数，一个是 `-i`：交互式操作，一个是 `-t` 终端。其中，`-t` 选项让Docker分配一个伪终端（pseudo-tty）并绑定到容器的标准输入上， `-i` 则让容器的标准输入保持打开。-it表示将当前终端连接到容器的Shell终端之上。
+
+  ```shell
+  [root@localhost ~]# docker container ls -a
+  CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS       PORTS                               NAMES
+  ff84e2008a4e   nginx     "/docker-entrypoint.…"   21 hours ago   Up 2 hours   0.0.0.0:80->80/tcp, :::80->80/tcp   zealous_chebyshev
+  [root@localhost ~]# docker container exec -it ff8 sh
+  #
+  ```
+
+  注意：使用`docker container exec`进入到终端之后，执行“exit”退出终端，对应的container不会停止运行。
 
 #### 综合示例
 
@@ -718,15 +783,29 @@ docker container start <container-name or container-id>
 $ docker container start percy
 ```
 
+
+
 ### docker container logs
 
 获取容器的输出信息。
 
-```shell
-$ docker container logs [container ID or NAMES]
-hello world
-hello world
+#### 命令格式
+
 ```
+docker container logs [container ID or NAMES]
+```
+
+#### 选项描述
+
+- -f：不加该选项，只会显示已经存在的信息，加了-f选项，将会追踪显示新的输出信息。
+
+  ```shell
+  $ docker container logs -f ff8
+  ```
+
+  
+
+
 
 ### docker container stop
 
@@ -740,7 +819,7 @@ docker container stop <container-name or container-id>
 
 #### 综合示例
 
-终止一个运行中的容器：
+示例一，终止一个运行中的容器：
 
 ```shell
 $ docker container stop gracious_faraday
@@ -748,9 +827,19 @@ $ docker container stop gracious_faraday
 $ docker container stop 302e2f
 ```
 
+示例二，批量停止运行的容器：
+
+```shell
+$ docker container stop 20fe53 22yd202  # 可以同时指定多个id
+或
+$ docker container stop $(docker container ls -aq) # 通过获取所有容器的id列表传递给stop，再进行停止
+```
+
+
+
 ### docker container rm
 
-杀死并删除容器。强烈建议在使用该命令前，先使用`docker container stop`停止容器。而不是使用`docker container rm <container> -f`的方式暴力的销毁容器。
+杀死并删除容器。该命令不能直接删除正在运行的容器，需要先停止再删除。强烈建议在使用该命令前，先使用`docker container stop`停止容器。而不是使用`docker container rm <container> -f`的方式暴力的销毁容器。
 
 #### 命令格式
 
@@ -760,7 +849,7 @@ docker container rm <container-name or container-id> [options]
 
 #### 选项描述
 
-- -f：表示强制执行，即使处于运行状态的容器也会被删除，通常不建议这么做，而是采用先停止再删除。这样可以给容器中运行的应用或进程一个停止运行并清理残留数据的机会。
+- ==-f==：表示强制执行，即使处于运行状态的容器也会被删除，通常不建议这么做，而是采用先停止再删除。这样可以给容器中运行的应用或进程一个停止运行并清理残留数据的机会。
 
 #### 综合示例
 
@@ -791,6 +880,30 @@ $ docker container inspect 7ab70
 或
 $ docker container inspect wy
 ```
+
+
+
+### docker container top
+
+用于显示当前容器运行了哪些进程。这些进程位于docker engine上。
+
+#### 命令格式
+
+```
+docker container top <container-name or container-id> 
+```
+
+#### 综合示例
+
+```shell
+$ docker container top ff8
+```
+
+
+
+
+
+
 
 
 
@@ -1040,3 +1153,15 @@ Restarting wyapp_redis_1  ... done
 ```
 
 注意：如果用户在停止该应用后对其进行了变更，那么变更的内容不会反映在重启后的应用中，这时需要重新部署应用使变更生效。
+
+
+
+## 其他命令
+
+### docker version
+
+查看docker版本信息。
+
+### docker info
+
+查看docker信息，包括当前images个数，containers数量等。
