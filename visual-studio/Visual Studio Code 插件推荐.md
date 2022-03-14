@@ -35,3 +35,25 @@ css颜色标识。
 ### Polacode
 
 将选中的代码导出为图片格式，并保留代码的样式。
+
+
+
+## VS Code 开发 .NET 推荐插件
+
+- vscode-solution-explorer
+
+- C# Extensions
+- .NET Core Add Reference
+- .NET Core Extension Pack
+- Add Local .Net Reference
+- ASP.NET Core Switcher
+- C# XML Documentation Comments
+
+如何在VSCode中，隐藏bin和obj目录。
+
+```
+文件 - 首选项 - 设置 - 工作区 - Files:Exclude - 添加“**/bin”和“**/obj”即可。
+```
+
+
+
