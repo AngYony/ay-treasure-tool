@@ -46,7 +46,7 @@ drwxr-xr-x 1 AngYony 197121    0 11月 20 11:22 ../
 
 Settings=>SSH and GPG keys=>SSH keys=>New SSH key，在弹出的界面中，粘贴上述id_rsa.pub公钥文件中的内容，Title可以不用填写，默认以邮箱地址作为Title。
 
-
+配置完成之后，即可使用Git命令进行推送操作。但还不能直接使用TortoiseGit工具。
 
 ## 使用TortoiseGit工具
 
