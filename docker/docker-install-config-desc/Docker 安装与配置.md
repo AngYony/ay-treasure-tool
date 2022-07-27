@@ -62,16 +62,16 @@ sudo systemctl start docker
 
 
 
-## 安装docker-compose
+## 安装docker-compose（最新版Docker已不需要单独安装）
 
 参考链接：
 
-[安装码头工人撰写|码头文档 (docker.com)](https://docs.docker.com/compose/install/)
+[Install Docker Compose CLI plugin | Docker Documentation](https://docs.docker.com/compose/install/compose-plugin/#install-using-the-repository)
 
 ### 下载docker-compose
 
 ```
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
 ```
 
 ### 对二进制文件应用可执行权限
