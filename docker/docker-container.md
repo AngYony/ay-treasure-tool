@@ -138,7 +138,7 @@ docker container run [options] <iamge> <app>
 
 - --restart：指定容器启动时采用哪种重启策略。
 
-- -P：将主机的端口与容器内的端口进行映射。
+- -P（--publish）：将主机的端口与容器内的端口进行映射。
 
 #### 综合示例
 
@@ -204,6 +204,8 @@ $ docker container attach ff8
 
 
 ### docker container exec
+
+用于在一个已经运行的容器里执行一个额外的命令。
 
 该命令允许用户在运行状态的容器中，启动一个新进程，通常用于将Shell连接到一个运行中的容器终端。==该命令会创建新的Bash或者PowerShell进程并且连接到容器，这意味着在当前Shell输入exit并不会导致容器终止，因为原Bash或者PowerShell进程还在运行当中==。
 
