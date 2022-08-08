@@ -8,7 +8,7 @@ namespace StrategyPattern
 {
     class CashContext
     {
-        CashSuper cs = null;
+        CashSuper cs = null!;
         public CashContext(string type)
         {
             // 与简单工厂模式的结合

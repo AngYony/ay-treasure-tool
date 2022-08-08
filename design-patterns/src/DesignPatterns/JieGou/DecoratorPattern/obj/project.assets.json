@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Wy_Work\\AngYony\\ay-treasure-tool\\design-patterns\\src\\DesignPatterns\\XingWei\\StrategyPattern\\StrategyPattern.csproj",
-      "projectName": "StrategyPattern",
-      "projectPath": "E:\\Wy_Work\\AngYony\\ay-treasure-tool\\design-patterns\\src\\DesignPatterns\\XingWei\\StrategyPattern\\StrategyPattern.csproj",
+      "projectUniqueName": "E:\\Wy_Work\\AngYony\\ay-treasure-tool\\design-patterns\\src\\DesignPatterns\\JieGou\\DecoratorPattern\\DecoratorPattern.csproj",
+      "projectName": "DecoratorPattern",
+      "projectPath": "E:\\Wy_Work\\AngYony\\ay-treasure-tool\\design-patterns\\src\\DesignPatterns\\JieGou\\DecoratorPattern\\DecoratorPattern.csproj",
       "packagesPath": "E:\\Repository\\nuget\\packages",
-      "outputPath": "E:\\Wy_Work\\AngYony\\ay-treasure-tool\\design-patterns\\src\\DesignPatterns\\XingWei\\StrategyPattern\\obj\\",
+      "outputPath": "E:\\Wy_Work\\AngYony\\ay-treasure-tool\\design-patterns\\src\\DesignPatterns\\JieGou\\DecoratorPattern\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

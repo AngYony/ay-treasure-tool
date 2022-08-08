@@ -3,9 +3,53 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChuangJian", "ChuangJian", "{F09A462B-5C34-4146-9E0A-EEF089BFC96D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "简单工厂模式", "简单工厂模式", "{1CB82B77-6E1C-4426-ABDC-4600D00F5565}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FactoryPattern", "ChuangJian\FactoryPattern\FactoryPattern.csproj", "{4AB87A19-6C7A-4519-8D10-6137A3D487DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XingWei", "XingWei", "{BE7027A6-D32A-48C5-8777-C65756AD109A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "策略模式", "策略模式", "{0E0D1858-FB8C-4C9B-B208-D66B78A9897D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrategyPattern", "XingWei\StrategyPattern\StrategyPattern.csproj", "{C74AE148-54A9-4F75-8B52-67A87973D04D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JieGou", "JieGou", "{33946F03-A3B3-49BE-8EB2-5C3719FD159A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "装饰模式", "装饰模式", "{A2FF393F-EE66-4EA5-994C-D31FAB752772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecoratorPattern", "JieGou\DecoratorPattern\DecoratorPattern.csproj", "{8C7D5F9B-A62D-47D5-BA36-FBAC66E0FF12}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AB87A19-6C7A-4519-8D10-6137A3D487DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AB87A19-6C7A-4519-8D10-6137A3D487DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AB87A19-6C7A-4519-8D10-6137A3D487DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AB87A19-6C7A-4519-8D10-6137A3D487DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74AE148-54A9-4F75-8B52-67A87973D04D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74AE148-54A9-4F75-8B52-67A87973D04D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74AE148-54A9-4F75-8B52-67A87973D04D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74AE148-54A9-4F75-8B52-67A87973D04D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7D5F9B-A62D-47D5-BA36-FBAC66E0FF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7D5F9B-A62D-47D5-BA36-FBAC66E0FF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7D5F9B-A62D-47D5-BA36-FBAC66E0FF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7D5F9B-A62D-47D5-BA36-FBAC66E0FF12}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1CB82B77-6E1C-4426-ABDC-4600D00F5565} = {F09A462B-5C34-4146-9E0A-EEF089BFC96D}
+		{4AB87A19-6C7A-4519-8D10-6137A3D487DC} = {1CB82B77-6E1C-4426-ABDC-4600D00F5565}
+		{0E0D1858-FB8C-4C9B-B208-D66B78A9897D} = {BE7027A6-D32A-48C5-8777-C65756AD109A}
+		{C74AE148-54A9-4F75-8B52-67A87973D04D} = {0E0D1858-FB8C-4C9B-B208-D66B78A9897D}
+		{A2FF393F-EE66-4EA5-994C-D31FAB752772} = {33946F03-A3B3-49BE-8EB2-5C3719FD159A}
+		{8C7D5F9B-A62D-47D5-BA36-FBAC66E0FF12} = {A2FF393F-EE66-4EA5-994C-D31FAB752772}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D071AE8C-44D5-4E71-8885-EB8F6DEEF144}

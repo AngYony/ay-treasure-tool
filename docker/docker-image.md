@@ -322,6 +322,8 @@ $ docker image pull gcr.io/nigelpoulton/tu-demo:v2
 $ docker pull gcr.azk8s.cn/google_containers/hyperkube-amd64:v1.9.2
 ```
 
+上述中的“nigelpoulton”表示用户名。
+
 ### docker image build
 
 根据Dockerfile中的指令来创建新的镜像。
@@ -353,6 +355,10 @@ $ docker image build -t test:latest .
 
 上述命令会构建并生成一个名为test:latest的镜像，注意：命令最后的点（.）表示Docker在进行构建的时候，使用当前目录作为构建上下文。
 
+### docker image import
+
+
+
 ### docker image inspect
 
 用于查看镜像的详细信息，包括镜像层数据和元数据。
@@ -381,11 +387,21 @@ $ docker image inspect nigelpoulton/pluralsight-docker-ci:latest
 
 在构建镜像时指定默认命令是一种很普遍的做法，这样可以简化容器的启动，也为镜像指定了默认的行为，从侧面阐述了镜像的用途。
 
+### docker image load
+
+将物理镜像文件还原成镜像。
+
+```shell
+$ docker image load -i .\nginx.image
+```
+
+镜像导出成文件，参见`docker image save`命令。
+
 ### docker image rm
 
 用于删除镜像，删除操作会在当前主机上删除该镜像以及相关的镜像层。但是如果某个镜像层被多个镜像共享，那么只有当全部依赖该镜像层的镜像都被删除后，该镜像层才会被删除。
 
-当镜像存在关联的容器，并且容器处于运行（Up）或者停止（Exited）状态时，不允许删除该镜像。
+由于容器是根据镜像创建的，当镜像存在关联的容器，并且容器处于运行（Up）或者停止（Exited）状态时，不允许删除该镜像（见示例五），必须先删除容器只能执行删除镜像的操作。
 
 #### 命令格式
 
@@ -445,6 +461,50 @@ $ docker image rm $(docker image ls -q) -f
 
 上述操作，先通过`docker image ls -q`命令获取全部镜像ID，然后将其传给`docker image rm`命令执行删除镜像的操作。
 
+示例五，删除存在关联容器的镜像：
+
+需先删除容器，再删除镜像。
+
+```shell
+$ docker container ls -a
+CONTAINER ID   IMAGE     COMMAND   CREATED       STATUS                     PORTS     NAMES
+500b748b7bdb   ubuntu    "sh"      2 weeks ago   Exited (127) 2 weeks ago             intelligent_snyder
+$ docker container rm 500
+$ docker image ls
+REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+ubuntu       latest    27941809078c   8 weeks ago   77.8MB
+$ docker image rm 279
+Untagged: ubuntu:latest
+Untagged: ubuntu@sha256:b6b83d3c331794420340093eb706a6f152d9c1fa51b262d9bf34594887c2c7ac
+Deleted: sha256:27941809078cc9b2802deb2b0bb6feed6c236cde01e487f200e24653533701ee
+Deleted: sha256:a790f937a6aea2600982de54a5fb995c681dd74f26968d6b74286e06839e4fb3
+```
+
+
+
+### docker image save
+
+将镜像保存成一个文件，以便其他地方进行导入。
+
+将文件还原成镜像文件，参见`docker image load`命令。
+
+#### 命令格式
+
+```shell
+docker image save <镜像> -o <文件名>
+```
+
+#### 命令说明
+
+-o：指定要保存的文件的位置。
+
+示例一，将版本为1.20.0的nginx镜像，保存为nginx.image文件。
+
+```shell
+cd /home/iamgefile
+$ docker image save nginx:1.20.0 -o nginx.image
+```
+
 ### docker image tag
 
 用于为指定的镜像添加一个额外的标签。
@@ -474,6 +534,10 @@ $ docker image tag web:latest smallz/web:latest
 ```shell
 $ docker image push smallz/web:latest
 ```
+
+### docker image prune
+
+
 
 ### docker image history
 
