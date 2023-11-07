@@ -178,3 +178,32 @@ Ctrl+双击窗口标题
 
 再次编译，就会编译失败了。
 
+
+
+### Visual Studio 修改NuGet 包缓存路径
+
+Visual Studio 下载的NuGet包默认会缓存到 C:\Users{Windows用户名}.nuget\packages 下，时间一长就会导致 C盘空间严重不足。
+
+设置将包缓存文件保存到其他盘，找到文件`"C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.Offline.config"`，以管理员身份打开并添加如下配置内容：
+
+```
+<config>
+      <add key="globalPackagesFolder" value="E:\Repository\nuget\packages" />
+  </config>
+```
+
+最终文件内容如下：
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <add key="Microsoft Visual Studio Offline Packages" value="C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\"/>
+  </packageSources>
+  <config>
+      <add key="globalPackagesFolder" value="E:\Repository\nuget\packages" />
+  </config>
+</configuration>
+```
+
+保存并退出即可。
