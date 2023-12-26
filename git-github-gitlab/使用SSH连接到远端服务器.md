@@ -48,6 +48,8 @@ Settings=>SSH and GPG keys=>SSH keys=>New SSH key，在弹出的界面中，粘�
 
 配置完成之后，即可使用Git命令进行推送操作。但还不能直接使用TortoiseGit工具。
 
+
+
 ## 使用TortoiseGit工具
 
 如果使用TortoiseGit工具以SSH的形式（非Https）形式访问仓库，需要使用对应的PuTTY工具，生成PuTTY key（私钥）。
@@ -57,6 +59,16 @@ Settings=>SSH and GPG keys=>SSH keys=>New SSH key，在弹出的界面中，粘�
 如下图所示：
 
 ![putty-key-generator](assets/putty-key-generator.png)
+
+
+
+## TortoiseGit相关的重要配置
+
+如果使用了代理软件，可能出现无法推送的问题，此时需要将ssh客户端配置成git目录下的客户端，而不是TortoiseGitPlink.exe。
+
+![image-20231226153905110](./assets/image-20231226153905110.png)
+
+
 
 
 
