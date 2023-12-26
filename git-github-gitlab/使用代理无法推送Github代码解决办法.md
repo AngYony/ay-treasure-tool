@@ -1,10 +1,6 @@
 # 使用代理无法推送Github代码解决办法
 
-如果使用了梯子，可以通过浏览器访问Github，但是无法推送和克隆代码。
-
-
-
-## 第一步：创建config文件
+如果使用了梯子，可以通过浏览器访问Github，但是无法推送和克隆代码，推荐使用下述方法进行配置。
 
 查看"C:\Users\AngYony\.ssh"目录下是否有config文件，如果没有，手动创建该文件即可。
 
@@ -47,3 +43,6 @@ ssh -T git@github.com
 
 如果验证无法通过，需要重新生成ssh key，参见《[使用SSH连接到远端服务器.md](使用SSH连接到远端服务器.md)》。
 
+如果使用了TortoiseGit工具无法推送代码，此时需要将ssh客户端配置成git目录下的客户端，而不是TortoiseGitPlink.exe。
+
+![image-20231226153905110](./assets/image-20231226153905110.png)
