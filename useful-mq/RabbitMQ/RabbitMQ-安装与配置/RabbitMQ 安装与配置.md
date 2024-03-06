@@ -142,8 +142,39 @@ netstat -tnlp | grep 15672
 ## 附： Docker安装RabbitMQ
 
 ```shell
-docker run -d -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+docker run -d -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.6.5-management
 ```
 
 安装完成之后，可以通过浏览器访问对应的15672端口打开RabbitMQ的管理界面，默认用户名和密码都为guest。
+
+
+
+### docker修改RabbitMQ的guest的密码
+
+查看RabbitMQ镜像信息：
+
+```shell
+docker ps -a
+```
+
+![image-20240306113123137](./assets/image-20240306113123137.png)
+
+进入docker容器，查看RabbitMQ当前用户列表：
+
+```shell
+docker exec -it bcfcd bash
+rabbitmqctl list_users
+```
+
+![image-20240306113030611](./assets/image-20240306113030611.png)
+
+修改密码，下述将密码改为`.netcore`：
+
+```shell
+rabbitmqctl change_password guest '.netcore'
+```
+
+![image-20240306112937890](./assets/image-20240306112937890.png)
+
+
 
