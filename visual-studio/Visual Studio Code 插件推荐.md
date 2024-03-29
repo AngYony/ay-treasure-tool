@@ -40,14 +40,19 @@ css颜色标识。
 
 ## VS Code 开发 .NET 推荐插件
 
-- vscode-solution-explorer
+- vscode-solution-explorer（推荐）
 
-- C# Extensions
+- C# Extensions（推荐）
+- VS Sharper for c#（推荐，可以帮助生成语句）
 - .NET Core Add Reference
 - .NET Core Extension Pack
 - Add Local .Net Reference
 - ASP.NET Core Switcher
 - C# XML Documentation Comments
+
+不建议安装的扩展：
+
+- C# Dev Kit，收费并且提示有限。
 
 如何在VSCode中，隐藏bin和obj目录。
 

@@ -1,4 +1,4 @@
-# Visual Studio 2017 使用技巧积累
+# Visual Studio 使用技巧积累
 
 
 
@@ -194,7 +194,7 @@ Visual Studio 下载的NuGet包默认会缓存到 C:\Users{Windows用户名}.nug
 
 最终文件内容如下：
 
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <packageSources>
@@ -207,3 +207,63 @@ Visual Studio 下载的NuGet包默认会缓存到 C:\Users{Windows用户名}.nug
 ```
 
 保存并退出即可。
+
+
+
+### Visual Studio 引入自己的包和DLL
+
+如何在A项目中引入B项目的程序集，有两种方式。
+
+#### 方式一：使用nuget package。
+
+第一步：修改B项目的项目文件，添加Version信息。
+
+```xml
+<PropertyGroup>
+  <TargetFramework>net7.0</TargetFramework>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <Nullable>enable</Nullable>
+  <Version>1.0.2</Version>
+</PropertyGroup>
+```
+
+第二步：打包项目程序集。右击项目，选择“打包”。执行完成之后，将在bin/Debug目录下，生成一个.nupkg文件，即为打包文件。
+
+第三步：将.nupkg打包文件放到nuget的程序包源中，或者添加该文件的目录到程序包源中。添加完成之后，可能无法在程序包管理器中搜索到该包，但是可以参照第四步直接在A项目添加引用即可。
+
+![image-20240314132019965](./assets/image-20240314132019965.png)
+
+第四步：在A项目文件中，添加B项目的程序集引用。
+
+```xml
+<PackageReference Include="B项目名" Version="1.0.2" />
+```
+
+第五步：还原Nuget包并重新生成项目。
+
+#### 方式二：直接添加项目引用（老的方式）
+
+第一步：右击项目，添加项目引用，选择“浏览”。
+
+第二步：找到B项目的程序集DLL文件，添加即可。
+
+第三步：添加完成之后，将在A项目文件中出现如下内容：
+
+```xml
+<ItemGroup>
+    <Reference Include="Qubiancheng.Abp.AspNet.JwtBearer">
+      <HintPath>..\..\..\Modules\Qubiancheng.Abp.AspNet.JwtBearer\bin\Debug\net7.0\Qubiancheng.Abp.AspNet.JwtBearer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+```
+
+第四步：重新生成即可。
+
+
+
+### XAML的实时可视化树显示完整的节点内容
+
+```
+工具 => 选项 => 调试 => XAML热重载 => 去除勾选“仅在实时可视化树启用“仅限我的 XAML””
+```
+
