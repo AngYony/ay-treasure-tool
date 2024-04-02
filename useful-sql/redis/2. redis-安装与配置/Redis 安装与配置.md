@@ -29,15 +29,42 @@ redis 6+版本在安装的时候，需要升级其他组件版本：
 yum -y install centos-release-scl && yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils && scl enable devtoolset-9 bash
 ```
 
-编译并安装：
+为了访问方便，可以先创建安装目录的软链接，非必须：
 
 ```shell
+root@hcss-ecs-af11:/opt/soft# ln -s redis-3.0.7 redis
+root@hcss-ecs-af11:/opt/soft# ll
+total 1356
+drwxr-xr-x 3 root root    4096 Apr  2 11:42 ./
+drwxr-xr-x 4 root root    4096 Apr  2 11:36 ../
+lrwxrwxrwx 1 root root      11 Apr  2 11:42 redis -> redis-3.0.7/
+drwxrwxr-x 6 root root    4096 Jan 25  2016 redis-3.0.7/
+-rw-r--r-- 1 root root 1375200 Jun 27  2020 redis-3.0.7.tar.gz
+```
+
+进入到安装目录，编译并安装：
+
+```shell
+cd redis
 make && make install
 ```
 
 
 
+## Redis 可执行文件说明
+
+- redis-server：通过该文件可以启动Redis服务器
+- redis-cli：Redis命令行客户端
+- redis-benchmark：redis性能测试工具
+- redis-check-aof：AOF文件检查修复工具
+- redis-check-dump：RDB文件检查修复工具
+- redis-sentinel：Sentinel服务器（2.8以后）
+
+
+
 ## 配置 redis
+
+习惯上， 一般会创建一个特有的工作目录，将配置文件的内容复制到该目录下，然后更改配置并应用。
 
 ### redis.conf 文件的配置
 
@@ -50,15 +77,23 @@ make && make install
 [root@localhost redis-6.0.15]# cd /usr/local/redis
 ```
 
+如果不想保留配置文件中的注释和多余配置项，可以执行下述命令直接生成去掉空行和注释后的配置文件：
+
+```
+cat redis.conf | grep -v "#" | grep -v "^$" > redis-wy.conf
+```
+
+然后把无关的或者默认的配置直接移除掉，只保留需要设置或更改的配置项即可。
+
 编辑 redis.conf 文件，进行如下设置：
 
-- 设置redis后台运行
+- daemonize：设置redis后台运行，以守护进程方式启动redis。
 
   ```shell
   daemonize yes
   ```
 
-- 设置redis工作目录
+- dir：设置redis工作目录
 
   ```shell
   # The working directory.
@@ -84,7 +119,7 @@ make && make install
   drwxr-xr-x. 2 root root     6 10月 28 15:40 working
   ```
 
-- 设置允许其他机器进行访问：
+- bind：设置允许其他机器进行访问：
 
   ```shell
   # Examples:
@@ -99,7 +134,7 @@ make && make install
   bind 0.0.0.0
   ```
 
-- 设置连接使用的密码，默认是没有密码的，一定要进行设置，这里将密码设置为了abcd-1234：
+- requirepass：设置连接使用的密码，默认是没有密码的，一定要进行设置，这里将密码设置为了abcd-1234：
 
   ```shell
   # IMPORTANT NOTE: starting with Redis 6 "requirepass" is just a compatibility
@@ -111,25 +146,25 @@ make && make install
    requirepass abcd-1234
   ```
 
-- 设置端口号，默认为6379，一般不用更改：
+- port：设置端口号，默认为6379，一般不用更改：
 
   ```shell
   port 6379
   ```
 
-- 设置 pid文件位置，一般不需要更改：
+- pidfile：设置 pid文件位置，一般不需要更改：
 
   ```shell
   pidfile /var/run/redis_6379.pid
   ```
 
-- 设置redis默认数据库的数量，一般不需要更改：
+- databases：设置redis默认数据库的数量，一般不需要更改：
 
   ```shell
   databases 16
   ```
 
-  
+- logfile：Redis系统日志文件名。
 
 配置完成之后，保存退出。
 
@@ -211,13 +246,49 @@ vim redis_init_script
   Redis stopped
   ```
   
-  
+
+
+
+
+
+## Redis三种启动方式
+
+Redis安装完后，有三种启动方式：
+
+- 最简启动，安装完后，进入到安装目录，直接执行redis-server，将使用默认配置进行启动。
+
+  ```shell
+  root@hcss-ecs-af11:/opt/soft/redis-6.0.15# redis-server
+  ```
+
+  可以通过如下3条命令进行验证：
+
+  ```shell
+  ps -ef | grep redis
+  netstat -antpl | grep redis
+  redis-cli -h ip -p port ping
+  ```
+
+- 动态参数启动
+
+  ```
+  redis -server --port 6380
+  ```
+
+- 配置文件启动（推荐方式）
+
+  ```shell
+  redis-server config/redis-wy.conf
+  ```
+
+三种不同方式的使用场景：
+
+- 生产环境选择配置启动
+- 单机多实例配置文件可以用端口区分开（一台机器同时启动多个Redis-server实例，使用不同端口区分）
 
 
 
 ## 运行并测试 redis-cli
-
-  
 
   直接输入redis-cli启动客户端，由于设置了密码，因此还需要指定密码：
 
