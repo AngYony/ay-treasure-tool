@@ -267,3 +267,8 @@ Visual Studio 下载的NuGet包默认会缓存到 C:\Users{Windows用户名}.nug
 工具 => 选项 => 调试 => XAML热重载 => 去除勾选“仅在实时可视化树启用“仅限我的 XAML””
 ```
 
+
+
+
+
+[用于 MSBuild 命令和属性的常用宏 | Microsoft Learn](https://learn.microsoft.com/zh-cn/cpp/build/reference/common-macros-for-build-commands-and-properties?view=msvc-170)
