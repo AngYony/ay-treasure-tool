@@ -1,10 +1,43 @@
 # 使用SSH连接到远端服务器
 
-使用SSH连接到GitHub，可参考链接：https://help.github.com/cn/github/authenticating-to-github/connecting-to-github-with-ssh，其他服务器的连接与GitHub类似。这里对主要步骤进行总结。
+有两种方式：
+
+- 使用 TortoiseGit 工具（推荐）
+- 使用Git本身工具
 
 
 
-## 第一步：检查现有SSH密钥
+##  TortoiseGit 工具 SSH 方式（推荐）
+
+### 第一步：通过 PuTTYgen 工具生成公密钥
+
+如果使用TortoiseGit工具以SSH的形式（非Https）形式访问仓库，需要使用对应的PuTTY工具，生成PuTTY key（私钥）。
+
+注意：TortoiseGit生成的private key（私钥）和Git自身生成的私钥是不能互相解析的，因此在使用TortoiseGit工具时，需要重新生成自己的private key。并且也需要将public key粘贴到GitHub上。
+
+如下图所示：
+
+![putty-key-generator](assets/putty-key-generator.png)
+
+### 第二步：将私钥添加到 Pageant 工具
+
+通常会自动完成第二步，如果没有完成，需要手动添加私钥Key。
+
+![image-20250910153517735](assets/image-20250910153517735.png)
+
+### 第三步：将公钥添加到Github中
+
+Settings=>SSH and GPG keys=>SSH keys=>New SSH key ，将第一步生成的Public Key 添加到GitHub中。
+
+完成之后，即可尝试拉取和推送代码。
+
+
+
+## Git 本身工具 SSH 方式
+
+
+
+### 第一步：检查现有SSH密钥
 
 打开 Git Bash，输入 `ls -al ~/.ssh` 以查看是否存在现有 SSH 密钥：
 
@@ -19,7 +52,9 @@ $ ls -al ~/.ssh
 - *id_ecdsa.pub*
 - *id_ed25519.pub*
 
-## 第二步：生成SSH密钥
+
+
+### 第二步：生成SSH密钥
 
 打开 Git Bash，输入下述命令：
 
@@ -42,23 +77,13 @@ drwxr-xr-x 1 AngYony 197121    0 11月 20 11:22 ../
 
 其中：id_rsa文件是私钥文件，留在本地；id_rsa.pub是公钥文件，一般会将其内容放到公网上面。
 
-## 第三步：在GitHub上添加SSH公钥内容
+
+
+### 第三步：在GitHub上添加SSH公钥内容
 
 Settings=>SSH and GPG keys=>SSH keys=>New SSH key，在弹出的界面中，粘贴上述id_rsa.pub公钥文件中的内容，Title可以不用填写，默认以邮箱地址作为Title。
 
 配置完成之后，即可使用Git命令进行推送操作。但还不能直接使用TortoiseGit工具。
-
-
-
-## 使用TortoiseGit工具
-
-如果使用TortoiseGit工具以SSH的形式（非Https）形式访问仓库，需要使用对应的PuTTY工具，生成PuTTY key（私钥）。
-
-注意：TortoiseGit生成的private key（私钥）和Git自身生成的私钥是不能互相解析的，因此在使用TortoiseGit工具时，需要重新生成自己的private key。并且也需要将public key粘贴到GitHub上。
-
-如下图所示：
-
-![putty-key-generator](assets/putty-key-generator.png)
 
 
 
