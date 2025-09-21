@@ -91,6 +91,8 @@ Settings=>SSH and GPG keys=>SSH keys=>New SSH key，在弹出的界面中，粘�
 
 如果使用了代理软件，可能出现无法推送的问题，此时需要将ssh客户端配置成git目录下的客户端，而不是TortoiseGitPlink.exe。
 
+注意：新版本的TortoiseGit已经不需要再做调整，直接默认的TortoiseGitPlink.exe程序即可。
+
 ![image-20231226153905110](./assets/image-20231226153905110.png)
 
 
