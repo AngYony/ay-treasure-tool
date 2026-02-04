@@ -190,3 +190,7 @@
 
 
 
+### Collapse Level
+
+折叠代码，快捷键：Alt+1~Alt+9
+
